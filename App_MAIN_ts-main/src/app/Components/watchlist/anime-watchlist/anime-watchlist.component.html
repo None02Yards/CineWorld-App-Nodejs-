@@ -1,0 +1,9 @@
+<!-- src/app/Components/watchlist/anime-watchlist/anime-watchlist.component.html -->
+
+<h3 class="watchlist-heading">Anime 🎌</h3>
+<app-watchlist-card
+  [items]="animeList"
+  mediaType="anime"
+  (remove)="removeFromWatchlist($event)">
+</app-watchlist-card>
+

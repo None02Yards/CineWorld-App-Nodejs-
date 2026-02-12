@@ -1,0 +1,78 @@
+<div class="custom-list-detail-wrapper">
+  <div class="watchlist-header position-relative text-white">
+    <div class="floating-title">
+      <h1 class="watchlist-title m-0 ms-2">Your Custom Lists</h1>
+      <span class="emoji">📂</span>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="watchlist-row">
+      <div
+        class="category-card"
+        *ngFor="let list of customLists"
+        [style.backgroundColor]="list.color || '#1f1f1f'"
+      >
+        <!-- Edit Mode -->
+        <div *ngIf="editingListId === list.id; else viewMode">
+          <input
+            type="text"
+            [(ngModel)]="list.name"
+            class="form-control mb-2"
+            placeholder="List Name"
+          />
+
+          <div class="d-flex flex-wrap gap-2 mb-2">
+            <div
+              *ngFor="let color of colorOptions"
+              class="color-box"
+              [style.backgroundColor]="color"
+              (click)="setColor(list, color)"
+              [class.selected]="list.color === color"
+            ></div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2">
+            <button class="btn btn-sm btn-secondary" (click)="cancelEdit()">Cancel</button>
+            <button class="btn btn-sm btn-success" (click)="saveEdit(list)">Save</button>
+          </div>
+        </div>
+
+        <!-- View Mode -->
+        <ng-template #viewMode>
+          <h2>{{ list.name }}</h2>
+          <p>{{ list.description }}</p>
+
+          <div class="preview-thumbs">
+            <p *ngIf="list.items.length === 0">No items added yet.</p>
+            <img
+              *ngFor="let item of list.items.slice(0, 6)"
+              [src]="getPoster(item.poster_path)"
+              [alt]="item.title || item.name"
+            />
+          </div>
+
+          <div class="action-row mt-2 d-flex justify-content-between align-items-center">
+            <a class="view-link" (click)="viewList(list)">👁️ View</a>
+
+            <div class="dropdown position-relative">
+              <button class="menu-toggle" (click)="toggleMenu(list.id)">⋯</button>
+
+              <ul *ngIf="activeMenuId === list.id" class="dropdown-menu show custom-dropdown">
+                <li><a (click)="editList(list.id)">✏️ Edit</a></li>
+                <li><a (click)="deleteList(list.id)">🗑️ Delete</a></li>
+                <li><a (click)="exportList(list)">📤 Export</a></li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-button-container text-center mt-5">
+    <button class="back-button" routerLink="/watchlist">
+      ⬅️ Back to Watchlist
+    </button>
+  </div>
+</div>

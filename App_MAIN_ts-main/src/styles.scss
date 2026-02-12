@@ -1,0 +1,180 @@
+/*  global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Chivo:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Roboto+Slab:wght@100..900&display=swap');
+$bgColor:#000000;
+$lightBgColor:rgba(30, 41, 82, 0.1);
+$bgTransparent:rgba(36,186,239,.6) ;
+$fontColor:#fff;
+$borderColor:#a8a8a83d;
+$borderHeight:1px;
+$secondFontColor:#949cb0;
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+router-outlet + * {
+    margin-bottom: 80px; 
+  }
+
+
+  img, video, .slider, .swiper, .background-image {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  html {
+  scroll-behavior: smooth;
+}
+// body, html {
+//   overflow-x: hidden;
+//   scroll-behavior: smooth;
+//   background-color: $bgColor;
+//   color: $fontColor;
+//   font-family: 'Open Sans', sans-serif;
+//   font-weight: 400;
+
+//   scrollbar-width: none; 
+//   -ms-overflow-style: none; // IE 10+
+// }
+
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  color: $fontColor;
+//   (thin scrollbar)
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a1a transparent;
+}
+
+body{         
+    overflow-x: hidden;
+    background-color: $bgColor;
+    color: $fontColor;
+    font-family: "Open Sans",sans-serif !important;
+    font-weight: 400;
+    .Border{
+        border:$borderHeight $borderColor solid;
+        margin:  0;
+      }
+      .different{
+          color: $secondFontColor;
+      }
+    a {
+        text-decoration: none !important;
+        color: $fontColor;
+    }
+
+
+    .poster{
+        .layer{
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            background-color:white;
+           position: absolute;
+           top: 100%;
+           left: 0px;
+           transition: all 0.8s;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           flex-direction: column;
+           z-index: 100;
+        }
+        img{
+            transition: all 0.5s;
+        }
+        &:hover .layer{
+            opacity: 0.5;
+            top: 0%;
+        }
+        &:hover img{
+            transform: scale(1.2,1.2)
+        }
+    .poster-img .layer {
+  pointer-events: none !important; /* purely visual overlay */
+}
+
+    }
+    h1{
+        font-family: "Bebas Neue", sans-serif !important;
+        margin-top: 2rem !important;
+        font-size: 4.5rem !important;
+    }
+
+    h2 {
+        font-family: "Lora",Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 1.7rem;
+        font-weight: 300;
+        margin-top: 1.5rem;
+        color: #ffffff;
+    }
+
+    h3 {
+        font-family: "Lora",sans-serif;
+        font-size: 1.8614em;
+    
+    }
+
+
+}
+// body::-webkit-scrollbar {
+//   display: none;               
+// }
+
+// Chrome, Edge, Safari
+body::-webkit-scrollbar {
+  width: 2px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #111111;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #1f1e1e;
+}
+
+
+body.watchlist-open .top-ten-wrapper .top-card .card:hover,
+body.watchlist-open .top-ten-wrapper .top-card .card {
+  transform: none !important;      /* kill hover scale & any transform */
+  overflow: visible !important;     /* no clipping */
+}
+
+body.watchlist-open .top-ten-wrapper .top-card .card:hover img {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+body.watchlist-open .top-ten-wrapper .scroll-wrapper {
+  overflow-x: auto !important;     /* keep the row width; no extra card appears */
+  overflow-y: visible !important;   /* vertical contents can overhang if needed */
+  scroll-snap-type: none !important;/* stop micro nudges */
+}
+/* Optional: if any parent uses AOS/animations with transform, neutralize */
+body.watchlist-open [data-aos],
+body.watchlist-open .aos-animate {
+  transform: none !important;
+}
+body.watchlist-open .watchlist-icon-container,
+body.watchlist-open .bookmark-icon-inner,
+body.watchlist-open app-rating-circle,
+body.watchlist-open .rating-circle {
+  pointer-events: none !important;   /* stop stealing hover/click */
+  /* no z-index override here */
+}
+
+
+
+   body.watchlist-open .rating-circle.is-stubborn,
+body.watchlist-open .watchlist-icon-container.is-stubborn {
+  visibility: hidden !important;
+}

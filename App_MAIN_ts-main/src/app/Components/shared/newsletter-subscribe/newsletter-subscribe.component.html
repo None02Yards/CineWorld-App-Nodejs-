@@ -1,0 +1,28 @@
+
+<!-- E:\Movie-App-0\App_MAIN_ts-main\src\app\shared\newsletter-subscribe\newsletter-subscribe.component.html -->
+<form (submit)="submit(); $event.preventDefault()">
+  <input
+    type="email"
+    class="form-control mb-2"
+    placeholder="Enter your email"
+    [(ngModel)]="email"
+    name="email"
+    required
+  />
+
+  <button
+    type="submit"
+    class="btn btn-danger w-100"
+    [disabled]="loading"
+  >
+    {{ loading ? 'Subscribing...' : 'Subscribe' }}
+  </button>
+
+  <p *ngIf="successMessage" class="text-success small mt-2">
+    {{ successMessage }}
+  </p>
+
+  <p *ngIf="errorMessage" class="text-danger small mt-2">
+    {{ errorMessage }}
+  </p>
+</form>

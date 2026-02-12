@@ -1,0 +1,55 @@
+
+
+<div class="edge-trigger-container">
+  <div class="red-strip"></div>
+
+  <div class="sidebar-container" [class.expanded]="isExpanded" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false">
+    <div class="sidebar-inner">
+    <ul class="nav flex-column align-items-center">
+
+  <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <a routerLink="/home" title="Home">
+      <i class="fas fa-home"></i>
+    </a>
+  </li>
+
+  <li routerLinkActive="active">
+    <a routerLink="/tvshows/popular/1" title="TV Shows">
+      <i class="fas fa-tv"></i>
+    </a>
+  </li>
+
+  <li routerLinkActive="active">
+    <a routerLink="/movies/popular/1" title="Movies">
+      <i class="fas fa-film"></i>
+    </a>
+  </li>
+
+  <li routerLinkActive="active">
+    <a routerLink="/watchlist" title="Watchlist">
+      <i class="fas fa-heart"></i>
+    </a>
+  </li>
+
+  <li routerLinkActive="active">
+    <a routerLink="/people/1" title="Celebs">
+      <i class="fas fa-user"></i>
+    </a>
+  </li>
+ <li routerLinkActive="active">
+    <a routerLink="/kids" title="Kids">
+      <i class="fa fa-child" aria-hidden="true"></i>
+    </a>
+  </li>
+
+    <li routerLinkActive="active">
+    <a routerLink="/watchlist/custom" title="custom">
+      <i class="fas fa-eye"></i>
+    </a>
+  </li>
+
+</ul>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,394 @@
+@import "./variables";
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50rem !important;
+  color: #c5c5c5;
+  background-color: #000;
+  position: relative;
+
+  @media (min-width: $breakpoint-xsmall) {
+    height: 50rem;
+    position: relative;
+  }
+
+  @media (min-width: $breakpoint-medium) {
+    position: relative;
+    display: block;
+    height: 0;
+    padding-bottom: 40%;
+  }
+}
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  @media (min-width: $breakpoint-xsmall) {
+    .slider {
+      position: relative !important;
+    }
+  }
+}
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  display:flex;
+  flex-direction: column; 
+}
+
+.mini-poster {
+  position: absolute;
+  top: 12rem; 
+  left: 50%;
+  height: 50vh;
+  transform: translateX(-50%);
+  width: 250px;
+  margin-top: 1rem;
+  border-radius: 20px;
+   pointer-events: all;
+  animation: slideInPoster 0.3s ease-out forwards;
+
+}
+
+.mini-poster img {
+  width: 100%;
+  display: block;
+  box-shadow: 0 10px 20px rgba(228, 228, 228, 0.5);
+  border-radius: 20px;
+}
+
+
+@keyframes slideInPoster {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+// .backdrop {
+//   position: relative;
+//   display: flex;
+//   flex: 1 1 auto;
+//   min-height: 0;
+
+//   @media (min-width: $breakpoint-medium) {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//   }
+
+//   &::after {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     display: block;
+//     content: "";
+//     background: 
+//   linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0)),
+//   linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0));
+
+
+//     @media (min-width: $breakpoint-medium) {
+//       background-image: linear-gradient(
+//         to right,
+//         #000 0,
+//         transparent 50%,
+//         transparent 100%
+//       );
+//     }
+//   }
+  
+
+//   > div {
+//     width: 100%;
+
+//     @media (min-width: $breakpoint-medium) {
+//       display: inline;
+//     }
+//   }
+// }
+
+
+.backdrop {
+  position: relative;
+  width: 100%;
+  height: 100%; 
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.75) 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  
+    z-index: 1;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  background: none;
+  transform: translate(-50%, -50%);
+
+  @media (min-width: $breakpoint-medium) {
+    display: none;
+  }
+}
+
+.image {
+  display: inline-block;
+  max-width: none;
+  height: 100%;
+
+  @media (max-width: $breakpoint-medium - 1) {
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+
+
+.backdrop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  padding: 2rem;
+  pointer-events: none; 
+}
+
+
+
+.pane {
+  padding: 0 3.5rem 3.5rem;
+  margin-top: 2rem ;
+  margin-left: 3rem;
+  animation: fallIn 0.8s ease-out;
+  pointer-events: all;
+
+
+
+  @media (min-width: $breakpoint-small) {
+    padding: 0 4rem 4rem;
+  }
+
+  @media (min-width: $breakpoint-medium) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    width: 55%;
+    height: 100%;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    padding-right: 5rem;
+    padding-left: 5rem;
+  }
+
+  @media (min-width: $breakpoint-xlarge) {
+    width: 45%;
+  }
+}
+
+@media (max-width: $breakpoint-medium - 1) {
+  .pane {
+    position: relative;
+    margin-top: -60px; // adjust as needed
+    margin-left: 0;
+    padding: 1.5rem;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.5); // optional, helps with readability
+  }
+
+  .slider {
+    display: block;
+    position: relative;
+  }
+
+  .backdrop {
+    position: relative; // don't make it absolute on small screens
+    width: 100%;
+    height: auto;
+
+    &::after {
+      background-image: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.7),
+        rgba(0, 0, 0, 0.2),
+        transparent
+      );
+    }
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+
+
+@keyframes fallIn {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.name {
+  margin: 0 0 2.7rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #c4c1c1;
+  letter-spacing: $letter-spacing;
+  cursor: pointer;
+
+  @media (min-width: $breakpoint-small) {
+    margin-bottom: 1.8rem;
+  }
+
+  @media (min-width: $breakpoint-large) {
+    font-size: 2.4vw;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.meta {
+  font-size: 1.4rem;
+
+  @media (min-width: $breakpoint-small) {
+    display: flex;
+  }
+
+  @media (min-width: 1650px) {
+    font-size: 0.9vw;
+  }
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.3rem;
+
+  @media (min-width: $breakpoint-small) {
+    margin: 0 1.2rem 0 0;
+  }
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+
+  span {
+    margin-right: 0.4rem;
+
+    &:not(:last-child):after {
+      content: "|";
+      margin-right: 9px;
+      margin-left: 9px;
+    }
+  }
+}
+
+.desc {
+  display: block;
+  margin-top: 2.5rem;
+  font-size: 1.2rem;
+  color: #d1c6c6;
+  font-weight: $base-font-weight;
+  // color: $base-font-color;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  @media (max-width: $breakpoint-small - 1) {
+    display: none;
+  }
+
+  @media (min-width: 1650px) {
+    font-size: 0.9vw;
+  }
+}
+
+.trailer {
+  margin-top: 3rem;
+
+  @media (max-width: $breakpoint-medium - 1) {
+    display: none;
+  }
+
+  @media (min-width: 1650px) {
+    font-size: 0.9vw;
+  }
+}
+
+.rate {
+  font-size: 12px;
+
+  i {
+    font-size: 16px;
+    margin-right: 5px;
+  }
+
+  .material-icons {
+    color: #dcf836;
+  }
+
+  span {
+    color: $base-font-color;
+    font-size: 16px;
+    font-weight: 400;
+  }
+}

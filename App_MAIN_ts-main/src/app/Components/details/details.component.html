@@ -1,0 +1,205 @@
+
+<!-- src\app\Components\details\details.component.html -->
+
+<div class="container mt-5 pt-5">
+
+<div class="row justify-content-center mb-4">
+  <div class="col-lg-10">
+    <div class="hero-video">
+      <button class="thumb" *ngIf="!hero.playing" (click)="playHero()" [style.backgroundImage]="hero.bgImage">
+        <span class="gradient"></span>
+        <span class="play"><i class="fa fa-play"></i></span>
+      </button>
+
+      <!-- Iframe state -->
+      <div class="player" *ngIf="hero.playing">
+        <iframe
+          [src]="hero.urlAuto"
+          title="Trailer"
+          frameborder="0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          (load)="hero.loaded = true">
+        </iframe>
+
+        <div class="loading" *ngIf="!hero.loaded">
+          <span class="spinner"></span>
+        </div>
+
+        <button class="close" (click)="stopHero()" aria-label="Close video">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <!-- Main Row -->
+<div class="row">
+  <div class="col-lg-8 col-md-12">
+    <div class="details-container text-white">
+      <h2 class="media-title">{{ media }} name: {{ itemDetails.name || itemDetails.original_title }}</h2>
+      <p class="tagline">{{ itemDetails.tagline }}</p>
+
+      <div class="row align-items-start mt-4 gx-3">
+        <!-- Genres -->
+        <div class="col-12 col-md-6" *ngIf="showGenre">
+          <div class="genre-buttons d-flex flex-wrap gap-2">
+            <button *ngFor="let genre of itemDetails.genres" class="genre-btn btn btn-outline-light btn-sm">
+              {{ genre.name }}
+            </button>
+          </div>
+        </div>
+
+         <div class="col-12 col-md-6 mt-3 mt-md-0">
+           <div class="watch-actions d-flex flex-column gap-2"> 
+            
+
+              <app-watchlist-action
+                #wl
+                [showIcon]="false"
+                [item]="wlItem"
+                [mediaType]="mediaType"
+                [customLists]="customLists">
+              </app-watchlist-action>
+
+              <button
+                class="btn btn-add-watchlist d-flex justify-content-between align-items-center"
+                (click)="wl.openFor($event, wlItem)">
+                <span>
+                  <i class="fa me-2"
+                    [ngClass]="wl.isInWatchlist(itemDetails?.id) || wl.isInAnyCustomList(itemDetails?.id)
+                                ? 'fa-check text-success' : 'fa-plus'"></i>
+                  {{ (wl.isInWatchlist(itemDetails?.id) || wl.isInAnyCustomList(itemDetails?.id))
+                      ? 'In Watchlist' : 'Add to Watchlist' }}
+                </span>
+                <i class="fa fa-chevron-down"></i>
+              </button>
+
+
+
+
+            <button class="btn btn-mark-watched">
+              <i class="fa fa-eye me-2 text-primary"></i>
+              <span class="text-primary">Mark as Watched</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats mt-4">
+        <p>⭐ Vote: <strong>{{ itemDetails.vote_average }}</strong></p>
+        <p>🗳️ Vote count: <strong>{{ itemDetails.vote_count }}</strong></p>
+        <p>🔥 Popularity: <strong>{{ itemDetails.popularity }}</strong></p>
+        <p>📅 Release date: <strong>{{ itemDetails.release_date || itemDetails.first_air_date }}</strong></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RIGHT: More to Explore -->
+  <div class="col-lg-4 col-md-12">
+    <div class="more-to-explore-sidebar text-white">
+      <h5 class="fw-bold mb-3 border-start border-3 ps-2 border-warning">More to CineWorld</h5>
+  
+      <div *ngFor="let section of moreToExplore | slice:0:2" class="mb-4">
+  <div class="editor-card p-3 rounded shadow-sm bg-dark h-100">
+    <h6 class="editor-title mb-2">{{ section.title }}</h6>
+
+ <div class="d-flex gap-2 flex-wrap">
+  <div
+    *ngFor="let media of section.posters | slice:0:3"
+    class="poster-box"
+    (click)="goToDetails(media, section.type, $event)"
+  >
+    <img
+      [src]="'https://image.tmdb.org/t/p/w200' + media.poster_path"
+      [alt]="media.title || media.name"
+      class="img-fluid rounded"
+    />
+  </div>
+</div>
+
+
+
+<a [routerLink]="section.link" class="link-pointer d-block">
+  {{ section.linkText }}
+</a>
+
+
+
+
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Cast Section -->
+<div class=" container topcast">
+  <div *ngIf="castList.length > 0" class="cast-section text-white">
+    <h4 class="mb-3 border-start border-3 ps-2 border-warning">Top Cast</h4>
+    <div class="d-flex gap-4 flex-wrap">
+     <div *ngFor="let cast of castList" class="text-center" style="width: 100px;">
+        <a [routerLink]="['/person', cast.id]" class="text-decoration-none text-white d-block">
+          <img [src]="'https://image.tmdb.org/t/p/w185' + cast.profile_path" class="rounded-circle img-fluid mb-2" />
+          <p class="mb-0 fw-bold small">{{ cast.name }}</p>
+          <p class="text-muted small">{{ cast.character }}</p>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Similar Items Section -->
+<div class="container mt-5">
+  <h4 class="titlemore text-white mb-3 border-start border-3 ps-2 border-warning">More Like This</h4>
+  <div class="slider-container similar-slider mb-5 position-relative">
+    
+    <button *ngIf="showLeftArrow" class="arrow left" (click)="scrollSimilarLeft()">
+      <i class="fa fa-chevron-left"></i>
+    </button>
+
+    <div #similarSlider class="slider d-flex overflow-auto">
+      <div *ngFor="let item of similarItems" class="movie-card small-card">
+        <div class="poster position-relative overflow-hidden">
+          <img class="w-100" [src]="'https://image.tmdb.org/t/p/w300/' + item.poster_path" [alt]="item.title || item.name">
+          <app-rating-circle [rating]="item.vote_average"></app-rating-circle>
+
+          <div class="layer">
+  <a [routerLink]="'/details/' + mediaType + '/' + item.id" class="bg-transparent d-block h-100 w-100 d-flex flex-column justify-content-center align-items-center text-decoration-none">
+    <i class="fa fa-play-circle fa-2x text-dark"></i>
+    <p class="fw-bold text-dark mb-0 mt-1">See more!</p>
+  </a>
+</div>
+
+        </div>
+        <div class="text-center mt-2">
+          <h6 class="text-truncate text-white">{{ item.title || item.name }}</h6>
+          <p class="text-warning mb-0">⭐ {{ item.vote_average?.toFixed(1) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <button *ngIf="showRightArrow" class="arrow right" (click)="scrollSimilarRight()">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Overview -->
+      <div class="overview-section text-center my-5 px-3">
+        <h3 class="overview-title">Overview 📝</h3>
+        <p class="overview-text mt-3">{{ itemDetails.overview }}</p>
+      </div>
+</div>

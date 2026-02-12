@@ -1,0 +1,231 @@
+
+.create-list-container {
+  display: flex;
+  justify-content: flex-end;
+  // margin-bottom: 20px;
+
+}
+
+.create-list-button {
+  background-color: #f5c518; 
+  border: none;
+  border-radius: 999px;
+  padding: 3px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: left;
+  margin-right: 20px;
+}
+
+.create-list-button:hover {
+  background-color: #e5b100;
+}
+
+.plus-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.button-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.main-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.sub-text {
+  font-size: 12px;
+  color: #333;
+}
+
+.new-list-form {
+  position: relative;
+  left: 500px;
+  background: #594f33;
+  width: 500px;
+  border-radius: 20px;
+  padding: 80px;
+  margin-right: 60px;
+  margin-left: 60px;
+  margin-bottom: 80px !important;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(180, 142, 6, 0.39);
+
+  input, textarea {
+    background: #121212;
+    border: 1px solid #d3a40a;
+    color: #fff;
+    padding: 8px;
+    width: 100%;
+  }
+
+  label {
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .btn-warning {
+    background-color: #ffcc00;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .btn-secondary {
+    background-color: #555;
+    color: #fff;
+  }
+}
+
+
+
+.watchlist-heading {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-top: 5rem !important;
+  margin-bottom: 1rem;
+  color: #e1d7d7;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif !important;
+}
+
+.anime{
+  background-image: url('./anime-collage.jpg');
+  background-size: cover;
+  object-fit: contain;
+  background-repeat: no-repeat;
+}
+
+
+.watchlist-header {
+  background: linear-gradient(to right, #827357,#111110b4, #0b0b0a, #23232380);
+  // position: relative;
+  padding-top: 4rem;
+
+  .header-content {
+    display: flex;
+    justify-content: flex-end; // this makes button align left
+    align-items: center;
+    padding: 2rem 1.5rem;
+   border-bottom: 1px solid #7876769d;
+
+  }
+
+  .floating-title {
+    position: absolute;
+    bottom: -2rem;
+    left: 2rem;
+    color: #e9e3e3;
+    padding: 0.4rem 1.2rem;
+    border-radius: 2rem;
+    font-weight: 600;
+    // background: #1a1a1a;
+    font-family: 'Segoe UI', sans-serif;
+    // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .emoji {
+      font-size: 2.8rem;
+    }
+
+    .watchlist-title {
+      font-size: 1.3rem;
+      margin: 0;
+    }
+  }
+}
+
+.watchlist-heading {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.75rem;
+  margin: 2rem 0 1rem;
+}
+
+.maincontainer {
+  min-height: 100vh; 
+  width: 100%;
+  background: linear-gradient(to right, #827357, #111110b4, #0b0b0a, #23232380) !important;
+  position: relative;
+  padding-bottom: 3rem; // so footer doesn't overlap if fixed
+  overflow-x: hidden;
+}
+
+
+
+.watchlist-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+  margin-top: 7rem;
+  margin-bottom: 8rem !important;
+
+}
+
+.category-card {
+  flex: 1 1 30%;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  h2 {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
+  .preview-thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+
+    img {
+      height: 100px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+  }
+
+  a {
+    color: #facc15;
+    font-weight: bold;
+    text-decoration: none;
+  }
+}
+
+
+.eye-icon-button {
+  position: relative;
+ right: 100px;
+  border: none;
+  // background: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #f5c518;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    background-color: transparent !important;
+    transform: scale(1.5);
+    color: #fff700;
+  }
+}
+

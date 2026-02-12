@@ -1,0 +1,25 @@
+<!-- Component/kids/kids.component.html -->
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+  [fullScreen]="true"
+>
+  <p style="color: rgb(186, 60, 60)">Loading...</p>
+</ngx-spinner>
+
+<app-slider [slider]="kidsSlider" [isKidsLayout]="true"></app-slider>
+<app-home
+  [trendingMovies]="kidsTrending"
+  [topTenMovies]="topTenKids"
+  [moreToExplore]="kidsMoreToExplore"
+[exclusiveVideos]="kidsExclusiveVideos"
+  [quote]="kidsQuote"
+  [redirectToPopularTVShowsFn]="goToPopularTVShows"
+  [customLists]="customLists"
+  [isKidsLayout]="true"
+></app-home>
+
+<app-latest-trailers [isKids]="true"></app-latest-trailers>
+
