@@ -7,8 +7,10 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: 'https://your-frontend-domain.vercel.app',
-  methods: ['GET', 'POST'],
+  origin: [
+    'http://localhost:4200',
+    'https://cine-world-8sl9fzkgi-yards-projects-ee159c2c.vercel.app'
+  ],
   credentials: true
 }));
 
