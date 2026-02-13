@@ -21,7 +21,7 @@ constructor(private router: Router) {
     if (event instanceof NavigationEnd) {
       this.currentRoute = event.urlAfterRedirects;
 
-      const hiddenRoutes = ['/welcome', '/profile'];
+      const hiddenRoutes = ['/welcome', '/profile', '/manage-profiles'];
 
       this.hideFooter = hiddenRoutes.some(route =>
         this.currentRoute.startsWith(route)
