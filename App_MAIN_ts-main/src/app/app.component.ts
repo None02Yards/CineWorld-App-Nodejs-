@@ -26,20 +26,13 @@ constructor(private router: Router) {
       this.hideFooter = hiddenRoutes.some(route =>
         this.currentRoute.startsWith(route)
       );
+
+      this.hideSidebar = this.hideFooter;
+
+      setTimeout(() => this.checkScroll(), 100);
     }
   });
 }
-  
-  // constructor(private router: Router) {
-  //   this.router.events.subscribe(event => {
-  //     if (event instanceof NavigationEnd) {
-  //       this.currentRoute = event.urlAfterRedirects;
-  //         this.hideSidebar = this.currentRoute === '/welcome';
-
-  //       setTimeout(() => this.checkScroll(), 100);
-  //     }
-  //   });
-  // }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
