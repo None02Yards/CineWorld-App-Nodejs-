@@ -6,12 +6,6 @@ connectDB();
 
 const app = express();
 
-/*
-|--------------------------------------------------------------------------
-| CORS Configuration
-|--------------------------------------------------------------------------
-*/
-
 const allowedOrigins = [
   'http://localhost:4200',
   process.env.CLIENT_URL
@@ -30,23 +24,12 @@ app.use(cors({
   credentials: true
 }));
 
-// Handle preflight requests properly
-app.options('*', cors());
-
-/*
-|--------------------------------------------------------------------------
-| Middleware
-|--------------------------------------------------------------------------
-*/
-
 app.use(express.json());
-
-
 
 app.use('/api/newsletter', require('./routes/newsletter.routes'));
 
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'API is running 🚀' });
+  res.status(200).json({ message: 'API running 🚀' });
 });
 
 module.exports = app;
