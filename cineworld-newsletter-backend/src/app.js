@@ -11,6 +11,7 @@ app.use(cors({
     'http://localhost:4200',
     'https://cine-world-8sl9fzkgi-yards-projects-ee159c2c.vercel.app'
   ],
+  methods: ['GET', 'POST'],
   credentials: true
 }));
 

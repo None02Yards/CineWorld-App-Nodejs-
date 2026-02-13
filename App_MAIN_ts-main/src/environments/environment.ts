@@ -1,4 +1,4 @@
-
+// E:\Movie-App-0\App_MAIN_ts-main\src\environments\environment.ts
 export const environment = {
   production: false,
   MovieAPI: 'https://api.themoviedb.org/3',
