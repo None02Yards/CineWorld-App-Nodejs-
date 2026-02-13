@@ -13,17 +13,33 @@ export class AppComponent {
   isAtTop = true;
   currentRoute = '';
  hideSidebar = false;
-  
-  constructor(private router: Router) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.currentRoute = event.urlAfterRedirects;
-          this.hideSidebar = this.currentRoute === '/welcome';
 
-        setTimeout(() => this.checkScroll(), 100);
-      }
-    });
-  }
+ hideFooter = false;
+
+constructor(private router: Router) {
+  this.router.events.subscribe(event => {
+    if (event instanceof NavigationEnd) {
+      this.currentRoute = event.urlAfterRedirects;
+
+      const hiddenRoutes = ['/welcome', '/profile'];
+
+      this.hideFooter = hiddenRoutes.some(route =>
+        this.currentRoute.startsWith(route)
+      );
+    }
+  });
+}
+  
+  // constructor(private router: Router) {
+  //   this.router.events.subscribe(event => {
+  //     if (event instanceof NavigationEnd) {
+  //       this.currentRoute = event.urlAfterRedirects;
+  //         this.hideSidebar = this.currentRoute === '/welcome';
+
+  //       setTimeout(() => this.checkScroll(), 100);
+  //     }
+  //   });
+  // }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -59,5 +75,7 @@ export class AppComponent {
     const scrollTarget = this.isAtTop ? 1000 : 0;
     window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
   }
+
+  
 }
 
