@@ -1,9 +1,8 @@
-<div class="hover-card"
+<div  #cardRef class="hover-card"
      [ngStyle]="{
        top: position.top + 'px',
        left: position.left + 'px'
      }">
-
 
   <!-- TOP IMAGE -->
   <div class="hover-image">
@@ -21,35 +20,50 @@
 
     <!-- ACTION BUTTONS -->
     <div class="hover-actions">
-      <button class="circle-btn play">
+      <button class="circle-btn play"
+              (click)="goToDetails($event)">
         <i class="fa fa-play"></i>
       </button>
 
-      <button class="circle-btn">
-        <i class="fa fa-plus"></i>
-      </button>
+      <button class="circle-btn"
+        (click)="toggleWatchlist($event)">
+  <i class="fa"
+     [ngClass]="isInWatchlist ? 'fa-check text-success' : 'fa-plus'">
+  </i>
+</button>
 
       <button class="circle-btn">
         <i class="fa fa-thumbs-up"></i>
       </button>
 
-      <button class="circle-btn arrow">
-        <i class="fa fa-chevron-down"></i>
+      <button class="circle-btn arrow"
+              (click)="toggleOverview($event)">
+        <i class="fa"
+           [ngClass]="showOverview ? 'fa-chevron-up' : 'fa-chevron-down'">
+        </i>
       </button>
     </div>
 
     <!-- META -->
     <div class="hover-meta">
       <span class="badge age">16+</span>
-      <span class="type">Limited Series</span>
+      <span class="type">
+        {{ mediaType === 'tv' ? 'Series' : 'Movie' }}
+      </span>
       <span class="badge hd">HD</span>
     </div>
 
     <!-- GENRES -->
-    <div class="hover-tags">
+    <div class="hover-tags" *ngIf="genres.length">
       <span *ngFor="let g of genres; let last = last">
         {{ g }}<span *ngIf="!last"> • </span>
       </span>
+    </div>
+
+    <!-- OVERVIEW TOGGLE -->
+    <div class="hover-overview"
+         *ngIf="showOverview">
+      {{ shortOverview }}
     </div>
 
   </div>

@@ -326,52 +326,6 @@ closePreview() {
 }
 
 
-
-// onHover(event: MouseEvent, item: any, type: 'movie' | 'tv') {
-//   if (this.overlayOpen) return;
-
-//   clearTimeout(this.hoverTimeout);
-
-//   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-
-//   this.hoverTimeout = setTimeout(() => {
-//     this.hoveredItem = item;
-//     this.hoveredType = type;
-
-//     const previewWidth = 360;
-//     const windowWidth = window.innerWidth;
-
-//     let left = rect.right + 15;
-
-//     // flip if overflow right
-//     if (left + previewWidth > windowWidth) {
-//       left = rect.left - previewWidth - 15;
-//     }
-
-//     this.previewPosition = {
-//       top: rect.top + window.scrollY,
-//       left
-//     };
-//   }, 180); // smooth Netflix-style delay
-// }
-
-// clearHover() {
-//   clearTimeout(this.hoverTimeout);
-//   this.hoveredItem = null;
-// }
-
-// openPreviewModal(data: any) {
-//   this.selectedPreview = data;
-//   this.showPreviewModal = true;
-//   this.hoveredItem = null;
-// }
-
-// closePreviewModal() {
-//   this.showPreviewModal = false;
-//   this.selectedPreview = null;
-// }
-
-
   shuffle(array: any[]): any[] {
     return array.sort(() => Math.random() - 0.5);
   }
