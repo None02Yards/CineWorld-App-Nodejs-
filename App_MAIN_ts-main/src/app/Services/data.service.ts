@@ -118,6 +118,16 @@ getCombinedCredits(id: string): Observable<any> {
     );
   }
   
+
+getGenres(type: 'movie' | 'tv'): Observable<any> {
+  return this._HttpClient.get(
+    `${this.MovieAPI}/genre/${type}/list?api_key=${this.APIKey}&language=en-US`
+  ).pipe(
+    catchError(this.handleError)
+  );
+}
+
+
   
 //****************  HandleError ***************//
 //** We Can make another Solution in Error Interceptor */
@@ -145,6 +155,10 @@ getFreeToWatch(type: 'movie' | 'tv'): Observable<any> {
   const url = `${this.MovieAPI}/discover/${type}?api_key=${this.APIKey}&with_watch_monetization_types=free&sort_by=popularity.desc`;
   return this._HttpClient.get(url).pipe(catchError(this.handleError));
 }
+
+
+
+
 
 
 
