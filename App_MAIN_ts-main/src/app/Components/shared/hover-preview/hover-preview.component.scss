@@ -1,0 +1,112 @@
+.hover-card {
+  position: absolute;
+  width: 340px;
+  background: #181818;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+
+  transform: scale(0.95);
+  animation: zoomIn 180ms ease forwards;
+}
+
+@keyframes zoomIn {
+  to {
+    transform: scale(1);
+  }
+}
+
+/* IMAGE */
+.hover-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hover-title {
+    position: absolute;
+    bottom: 12px;
+    left: 16px;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.8);
+  }
+}
+
+/* CONTENT */
+.hover-content {
+  padding: 16px;
+}
+
+/* BUTTONS */
+.hover-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.circle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #666;
+  background: transparent;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+
+  &:hover {
+    border-color: white;
+    background: rgba(255,255,255,0.1);
+  }
+}
+
+.circle-btn.play {
+  background: white;
+  color: black;
+  border: none;
+}
+
+/* META */
+.hover-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge.age {
+  border: 1px solid #aaa;
+}
+
+.badge.hd {
+  border: 1px solid #aaa;
+}
+
+.type {
+  color: #ccc;
+}
+
+/* TAGS */
+.hover-tags {
+  font-size: 13px;
+  color: #bbb;
+}

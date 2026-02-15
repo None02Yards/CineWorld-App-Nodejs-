@@ -1,0 +1,56 @@
+<div class="hover-card"
+     [ngStyle]="{
+       top: position.top + 'px',
+       left: position.left + 'px'
+     }">
+
+
+  <!-- TOP IMAGE -->
+  <div class="hover-image">
+    <img
+      [src]="'https://image.tmdb.org/t/p/w500' + item.poster_path"
+      [alt]="item.title || item.name" />
+
+    <div class="hover-title">
+      {{ item.title || item.name }}
+    </div>
+  </div>
+
+  <!-- BOTTOM CONTENT -->
+  <div class="hover-content">
+
+    <!-- ACTION BUTTONS -->
+    <div class="hover-actions">
+      <button class="circle-btn play">
+        <i class="fa fa-play"></i>
+      </button>
+
+      <button class="circle-btn">
+        <i class="fa fa-plus"></i>
+      </button>
+
+      <button class="circle-btn">
+        <i class="fa fa-thumbs-up"></i>
+      </button>
+
+      <button class="circle-btn arrow">
+        <i class="fa fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <!-- META -->
+    <div class="hover-meta">
+      <span class="badge age">16+</span>
+      <span class="type">Limited Series</span>
+      <span class="badge hd">HD</span>
+    </div>
+
+    <!-- GENRES -->
+    <div class="hover-tags">
+      <span *ngFor="let g of genres; let last = last">
+        {{ g }}<span *ngIf="!last"> • </span>
+      </span>
+    </div>
+
+  </div>
+</div>
