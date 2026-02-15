@@ -10,6 +10,7 @@ interface Movie {
   poster_path: string;
   title: string;
     name?: string;
+    id: number; 
 }
 
 @Component({
@@ -71,6 +72,24 @@ export class HomeComponent implements OnInit, OnDestroy {
   trendingShows: any[] = [];
   news: any[] = [];
 
+// previewPosition = { top: 0, left: 0 };
+//   hoveredItem: any = null;
+// hoveredType: 'movie' | 'tv' = 'movie';
+// private hoverTimeout: any;
+
+
+
+hoveredItem: any = null;
+hoveredType: 'movie' | 'tv' = 'movie';
+// previewPosition: { top: number; left: number } =  { top: '0px', left: '0px' };
+hoverTimeout: any;
+
+
+selectedPreview: any = null;
+showPreviewOverlay = false;
+previewPosition!: { top: number; left: number };
+
+
   @ViewChild('movieSlider', { static: false }) movieSlider!: ElementRef;
   @ViewChild('topTenSlider', { static: false }) topTenSlider!: ElementRef;
   private topTenScrollPos = 0;
@@ -79,11 +98,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   overlayOpen = false;
   private menuSub?: Subscription;
 
+
   constructor(
     private _DataService: DataService,
     private spinner: NgxSpinnerService,
     private router: Router,
-    private watchlist: WatchlistService   // 👈 subscribe to global menu state
+    private watchlist: WatchlistService   
   ) {}
 
   ngOnInit(): void {
@@ -212,6 +232,145 @@ goToDetails(item: any, type: 'movie' | 'tv', event?: MouseEvent): void {
       }
     });
   }
+
+
+
+
+// openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
+//   ev.preventDefault();
+//   ev.stopPropagation();
+
+//   const anchor = ev.currentTarget as HTMLElement;
+//   const r = anchor.getBoundingClientRect();
+
+//   const vw = window.innerWidth;
+//   const vh = window.innerHeight;
+
+//   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+//   const top = rect.top + window.scrollY;
+// const left = rect.right + 10;
+
+//   const overlayWidth = 520;
+//   const overlayHeight = 600;
+//   const gutter = 12;
+
+//   let left = r.left;
+//   let top = r.bottom + 10;
+
+//   // Flip horizontally if no space
+//   if (left + overlayWidth > vw - gutter) {
+//     left = vw - overlayWidth - gutter;
+//   }
+
+//   // Flip vertically if no space
+//   if (top + overlayHeight > vh - gutter) {
+//     top = r.top - overlayHeight - 10;
+//   }
+
+// this.previewPosition = { top, left };
+
+
+//   this.selectedPreview = item;
+//   this.hoveredType = type;
+//   this.showPreviewOverlay = true;
+
+//   document.body.classList.add('preview-open');
+// }
+
+openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
+  ev.preventDefault();
+  ev.stopPropagation();
+
+  const anchor = ev.currentTarget as HTMLElement;
+  const rect = anchor.getBoundingClientRect();
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const overlayWidth = 520;
+  const overlayHeight = 600;
+  const gutter = 12;
+
+  // Default position (below the clicked element)
+  let left = rect.left;
+  let top = rect.bottom + 10;
+
+  // 🔁 Flip horizontally if overflow right
+  if (left + overlayWidth > vw - gutter) {
+    left = vw - overlayWidth - gutter;
+  }
+
+  // 🔁 Flip vertically if overflow bottom
+  if (top + overlayHeight > vh - gutter) {
+    top = rect.top - overlayHeight - 10;
+  }
+
+  // Safety clamp
+  left = Math.max(gutter, left);
+  top = Math.max(gutter, top);
+
+  this.previewPosition = { top, left };
+
+  this.selectedPreview = item;
+  this.hoveredType = type;
+  this.showPreviewOverlay = true;
+
+  document.body.classList.add('preview-open');
+}
+
+closePreview() {
+  this.showPreviewOverlay = false;
+  this.selectedPreview = null;
+  document.body.classList.remove('preview-open');
+}
+
+
+
+// onHover(event: MouseEvent, item: any, type: 'movie' | 'tv') {
+//   if (this.overlayOpen) return;
+
+//   clearTimeout(this.hoverTimeout);
+
+//   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+//   this.hoverTimeout = setTimeout(() => {
+//     this.hoveredItem = item;
+//     this.hoveredType = type;
+
+//     const previewWidth = 360;
+//     const windowWidth = window.innerWidth;
+
+//     let left = rect.right + 15;
+
+//     // flip if overflow right
+//     if (left + previewWidth > windowWidth) {
+//       left = rect.left - previewWidth - 15;
+//     }
+
+//     this.previewPosition = {
+//       top: rect.top + window.scrollY,
+//       left
+//     };
+//   }, 180); // smooth Netflix-style delay
+// }
+
+// clearHover() {
+//   clearTimeout(this.hoverTimeout);
+//   this.hoveredItem = null;
+// }
+
+// openPreviewModal(data: any) {
+//   this.selectedPreview = data;
+//   this.showPreviewModal = true;
+//   this.hoveredItem = null;
+// }
+
+// closePreviewModal() {
+//   this.showPreviewModal = false;
+//   this.selectedPreview = null;
+// }
+
 
   shuffle(array: any[]): any[] {
     return array.sort(() => Math.random() - 0.5);

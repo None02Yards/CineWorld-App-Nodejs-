@@ -12,7 +12,8 @@ import { FreeToWatchComponent } from '../free-to-watch/free-to-watch.component';
 import { LatestTrailersComponent } from '../latest-trailers/latest-trailers.component'; // ✅ Import it
 import { WatchlistActionComponent } from '../watchlist-action/watchlist-action.component';
 import {CelebritiesComponent} from '../celebrities/celebrities.component';
-import { NewsletterSubscribeComponent } from '../shared/newsletter-subscribe/newsletter-subscribe.component'; // ✅ ADD THIS
+import { NewsletterSubscribeComponent } from '../shared/newsletter-subscribe/newsletter-subscribe.component';
+import { HoverPreviewComponent } from './hover-preview/hover-preview.component'; // ✅ ADD THIS
 
 
 
@@ -26,6 +27,7 @@ import { NewsletterSubscribeComponent } from '../shared/newsletter-subscribe/new
       WatchlistActionComponent,
 CelebritiesComponent,
     NewsletterSubscribeComponent,
+    HoverPreviewComponent,
 
 
 ],
@@ -37,6 +39,7 @@ CelebritiesComponent,
     WatchlistActionComponent,
     CelebritiesComponent,
         NewsletterSubscribeComponent,
+    HoverPreviewComponent,
 
   ],
 imports: [
