@@ -160,30 +160,6 @@ toggleExpand(event: MouseEvent): void {
   }
 
 
-
-//  get shortOverview(): string {
-//     if (!this.item?.overview) return '';
-//     return this.item.overview.length > 160
-//       ? this.item.overview.slice(0, 160) + '...'
-//       : this.item.overview;
-//   }
-
-
-// get shortOverview(): string {
-//   if (!this.item?.overview) return '';
-
-//   const text = this.item.overview.trim();
-
-//   if (text.length <= this.OVERVIEW_LIMIT) {
-//     return text;
-//   }
-
-//   const truncated = text.slice(0, this.OVERVIEW_LIMIT);
-//   const lastSpace = truncated.lastIndexOf(' ');
-
-//   return truncated.slice(0, lastSpace > 0 ? lastSpace : this.OVERVIEW_LIMIT) + '...';
-// }
-
 get shortOverview(): string {
   if (!this.item?.overview) return '';
 
