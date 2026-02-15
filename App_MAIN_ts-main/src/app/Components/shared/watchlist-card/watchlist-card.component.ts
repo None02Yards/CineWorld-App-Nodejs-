@@ -87,11 +87,11 @@ export class WatchlistCardComponent implements OnChanges {
     this.pendingId = null;
   }
 
-  @HostListener('document:keydown.escape', ['$event'])
-  handleEscape(event: KeyboardEvent): void {
-    if (this.showConfirm) {
-      this.cancelRemove();
-    }
+ @HostListener('document:keydown.escape')
+handleEscape(): void {
+  if (this.showConfirm) {
+    this.cancelRemove();
   }
+}
 }
 
