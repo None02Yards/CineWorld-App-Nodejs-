@@ -13,7 +13,7 @@ import { LatestTrailersComponent } from '../latest-trailers/latest-trailers.comp
 import { WatchlistActionComponent } from '../watchlist-action/watchlist-action.component';
 import {CelebritiesComponent} from '../celebrities/celebrities.component';
 import { NewsletterSubscribeComponent } from '../shared/newsletter-subscribe/newsletter-subscribe.component';
-import { HoverPreviewComponent } from './hover-preview/hover-preview.component'; // ✅ ADD THIS
+import { HoverPreviewComponent } from './hover-preview/hover-preview.component';
 
 
 
@@ -28,6 +28,7 @@ import { HoverPreviewComponent } from './hover-preview/hover-preview.component';
 CelebritiesComponent,
     NewsletterSubscribeComponent,
     HoverPreviewComponent,
+   
 
 
 ],
