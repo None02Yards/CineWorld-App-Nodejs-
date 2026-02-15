@@ -1,4 +1,6 @@
-<div  #cardRef class="hover-card"
+<div #cardRef
+     class="hover-card"
+     [class.fade-out]="isFadingOut"
      [ngStyle]="{
        top: position.top + 'px',
        left: position.left + 'px'
@@ -6,42 +8,48 @@
 
   <!-- TOP IMAGE -->
   <div class="hover-image">
-    <img
-      [src]="'https://image.tmdb.org/t/p/w500' + item.poster_path"
-      [alt]="item.title || item.name" />
+    <img [src]="'https://image.tmdb.org/t/p/w500' + item.poster_path"
+         [alt]="item.title || item.name" />
 
     <div class="hover-title">
       {{ item.title || item.name }}
     </div>
   </div>
 
-  <!-- BOTTOM CONTENT -->
+  <!-- CONTENT -->
   <div class="hover-content">
 
     <!-- ACTION BUTTONS -->
     <div class="hover-actions">
+
+      <!-- PLAY -->
       <button class="circle-btn play"
               (click)="goToDetails($event)">
         <i class="fa fa-play"></i>
       </button>
 
+      <!-- WATCHLIST -->
       <button class="circle-btn"
-        (click)="toggleWatchlist($event)">
-  <i class="fa"
-     [ngClass]="isInWatchlist ? 'fa-check text-success' : 'fa-plus'">
-  </i>
-</button>
+              (click)="toggleWatchlist($event)">
+        <i class="fa"
+           [ngClass]="isInWatchlist ? 'fa-check text-success' : 'fa-plus'">
+        </i>
+      </button>
 
-      <button class="circle-btn">
+      <!-- LIKE -->
+      <button class="circle-btn"
+              (click)="triggerAuthToast($event)">
         <i class="fa fa-thumbs-up"></i>
       </button>
 
-      <button class="circle-btn arrow"
-              (click)="toggleOverview($event)">
-        <i class="fa"
-           [ngClass]="showOverview ? 'fa-chevron-up' : 'fa-chevron-down'">
-        </i>
-      </button>
+      <!-- EXPAND -->
+    <button class="circle-btn arrow"
+        (click)="toggleExpand($event)">
+  <i class="fa"
+     [ngClass]="expanded ? 'fa-chevron-up' : 'fa-chevron-down'">
+  </i>
+</button>
+
     </div>
 
     <!-- META -->
@@ -60,11 +68,27 @@
       </span>
     </div>
 
-    <!-- OVERVIEW TOGGLE -->
-    <div class="hover-overview"
-         *ngIf="showOverview">
-      {{ shortOverview }}
-    </div>
+    <!-- OVERVIEW (Single Controlled Block) -->
+<div class="hover-overview"
+     [class.expanded]="expanded">
+  <!-- <p>
+    {{ expanded ? item.overview : shortOverview }}
+  </p> -->
+
+  <p>
+  {{ shortOverview }}
+</p>
+</div>
+
 
   </div>
+</div>
+
+<!-- LOGIN TOAST -->
+<div class="cinematic-toast" *ngIf="showAuthToast">
+  <span>
+    Please 
+    <a (click)="goToLogin()" class="login-link">Login</a>
+    to like this title
+  </span>
 </div>

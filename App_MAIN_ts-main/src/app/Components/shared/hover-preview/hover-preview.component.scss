@@ -1,14 +1,19 @@
-.hover-card {
-  position: absolute;
-  width: 340px;
-  background: #131212ed;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-  z-index: 9999;
 
-  transform: scale(0.95);
+
+.hover-card {
+  position: fixed !important;
+  width: 340px;
+ background: #131212ed !important;
+  border-radius: 9px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+   transform: scale(0.95);
   animation: zoomIn 180ms ease forwards;
+
 }
 
 @keyframes zoomIn {
@@ -16,6 +21,11 @@
     transform: scale(1);
   }
 }
+.hover-card.fade-out {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
 
 /* IMAGE */
 .hover-image {
@@ -43,6 +53,7 @@
 /* CONTENT */
 .hover-content {
   padding: 16px;
+
 }
 
 /* BUTTONS */
@@ -109,4 +120,84 @@
 .hover-tags {
   font-size: 13px;
   color: #bbb;
+}
+
+.hover-overview{
+
+  color: #b9b2b2 !important;
+  font-size: 16px !important;
+}
+
+
+.hover-card {
+  position: fixed !important;
+  width: 380px;
+  background: #141414;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 9999;
+  transition: all 0.25s ease;
+}
+
+.hover-content {
+  padding: 14px;
+}
+
+.hover-overview {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.hover-overview.expanded {
+  max-height: 300px;
+  opacity: 1;
+  margin-top: 10px;
+}
+
+
+.cinematic-toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  background: rgba(20, 20, 20, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-size: 14px;
+  color: #eee;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  animation: toastFadeIn 0.3s ease forwards;
+  z-index: 99999;
+
+  span {
+    letter-spacing: 0.5px;
+  }
+
+  .login-link {
+    color: #e50914;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 4px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.7;
+      text-decoration: underline;
+    }
+  }
+}
+
+@keyframes toastFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
 }
