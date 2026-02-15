@@ -57,9 +57,15 @@
       align-items: center;
       transition: opacity 0.3s ease;
       border-radius: 10px;
+
+      pointer-events: none; 
   
       i {
         margin-bottom: 1.5rem;
+      }
+
+      a{
+         pointer-events: auto;
       }
     }
   
@@ -347,19 +353,6 @@
   }
   
 }
-/* Kids-only: let the fixed dropdown escape the card */
-
-// .watchlist-open .top-card .card:hover { 
-//   transform: none !important; 
-// }
-
-// .watchlist-open .top-card .card { 
-//   overflow: visible !important; 
-// }
-
-// .watchlist-open .scroll-wrapper { 
-//   overflow: visible !important; 
-// }
 
 
 .movie-title {
