@@ -72,29 +72,34 @@ export class HomeComponent implements OnInit, OnDestroy {
   trendingShows: any[] = [];
   news: any[] = [];
 
-// previewPosition = { top: 0, left: 0 };
-//   hoveredItem: any = null;
-// hoveredType: 'movie' | 'tv' = 'movie';
-// private hoverTimeout: any;
-
-
 
 hoveredItem: any = null;
-hoveredType: 'movie' | 'tv' = 'movie';
-// previewPosition: { top: number; left: number } =  { top: '0px', left: '0px' };
+hoveredType!: 'movie' | 'tv';
+isHoveringPreview = false;
+
+previewPosition: { top: number; left: number } = { top: 0, left: 0 };
 hoverTimeout: any;
+
+
+moreHoveredItem: any = null;
+moreHoveredType!: 'movie' | 'tv';
+morePreviewPosition: { top: number; left: number } = { top: 0, left: 0 };
+moreHoverTimeout: any;
 
 
 selectedPreview: any = null;
 showPreviewOverlay = false;
-previewPosition!: { top: number; left: number };
+
+// previewPosition!: { top: number; left: number };
+
+
+
 
 
   @ViewChild('movieSlider', { static: false }) movieSlider!: ElementRef;
   @ViewChild('topTenSlider', { static: false }) topTenSlider!: ElementRef;
   private topTenScrollPos = 0;
 
-  /** 🔗 set by WatchlistService.openMenu / closeMenu */
   overlayOpen = false;
   private menuSub?: Subscription;
 
@@ -180,6 +185,8 @@ previewPosition!: { top: number; left: number };
   });
 }
 
+
+
 goToDetails(item: any, type: 'movie' | 'tv', event?: MouseEvent): void {
   if (this.overlayOpen) {
     event?.stopPropagation();
@@ -235,49 +242,6 @@ goToDetails(item: any, type: 'movie' | 'tv', event?: MouseEvent): void {
 
 
 
-
-// openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
-//   ev.preventDefault();
-//   ev.stopPropagation();
-
-//   const anchor = ev.currentTarget as HTMLElement;
-//   const r = anchor.getBoundingClientRect();
-
-//   const vw = window.innerWidth;
-//   const vh = window.innerHeight;
-
-//   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-
-//   const top = rect.top + window.scrollY;
-// const left = rect.right + 10;
-
-//   const overlayWidth = 520;
-//   const overlayHeight = 600;
-//   const gutter = 12;
-
-//   let left = r.left;
-//   let top = r.bottom + 10;
-
-//   // Flip horizontally if no space
-//   if (left + overlayWidth > vw - gutter) {
-//     left = vw - overlayWidth - gutter;
-//   }
-
-//   // Flip vertically if no space
-//   if (top + overlayHeight > vh - gutter) {
-//     top = r.top - overlayHeight - 10;
-//   }
-
-// this.previewPosition = { top, left };
-
-
-//   this.selectedPreview = item;
-//   this.hoveredType = type;
-//   this.showPreviewOverlay = true;
-
-//   document.body.classList.add('preview-open');
-// }
-
 openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
   ev.preventDefault();
   ev.stopPropagation();
@@ -285,30 +249,28 @@ openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
   const anchor = ev.currentTarget as HTMLElement;
   const rect = anchor.getBoundingClientRect();
 
+  const overlayWidth = 520;
+  const overlayHeight = 600;
+  const gutter = 16;
+
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  const overlayWidth = 520;
-  const overlayHeight = 600;
-  const gutter = 12;
-
-  // Default position (below the clicked element)
+  // Always open BELOW button
+  let top = rect.bottom + 12;
   let left = rect.left;
-  let top = rect.bottom + 10;
 
-  // 🔁 Flip horizontally if overflow right
+  // Horizontal clamp
   if (left + overlayWidth > vw - gutter) {
     left = vw - overlayWidth - gutter;
   }
 
-  // 🔁 Flip vertically if overflow bottom
-  if (top + overlayHeight > vh - gutter) {
-    top = rect.top - overlayHeight - 10;
+  if (left < gutter) {
+    left = gutter;
   }
-
-  // Safety clamp
-  left = Math.max(gutter, left);
-  top = Math.max(gutter, top);
+  if (top + overlayHeight > vh - gutter) {
+    top = vh - overlayHeight - gutter;
+  }
 
   this.previewPosition = { top, left };
 
@@ -318,6 +280,9 @@ openPreview(ev: MouseEvent, item: any, type: 'movie' | 'tv') {
 
   document.body.classList.add('preview-open');
 }
+
+
+
 
 closePreview() {
   this.showPreviewOverlay = false;
@@ -357,4 +322,83 @@ closePreview() {
       behavior: 'smooth'
     });
   }
+
+
+  onMoreHover(event: MouseEvent, item: any, type: 'movie' | 'tv') {
+  clearTimeout(this.moreHoverTimeout);
+
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+
+  const overlayWidth = 420;
+  const overlayHeight = 480;
+  const gutter = 12;
+
+  let top = rect.bottom + 8;
+  let left = rect.left;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  if (left + overlayWidth > vw - gutter) {
+    left = vw - overlayWidth - gutter;
+  }
+
+  if (left < gutter) left = gutter;
+
+  if (top + overlayHeight > vh - gutter) {
+    top = vh - overlayHeight - gutter;
+  }
+
+  this.morePreviewPosition = { top, left };
+  this.moreHoveredItem = item;
+  this.moreHoveredType = type;
+}
+
+
+
+clearMoreHover() {
+  this.moreHoverTimeout = setTimeout(() => {
+    if (!this.isHoveringPreview) {
+      this.moreHoveredItem = null;
+    }
+  }, 180);
+}
+
+onPreviewEnter() {
+  this.isHoveringPreview = true;
+  clearTimeout(this.moreHoverTimeout);
+}
+
+onPreviewLeave() {
+  this.isHoveringPreview = false;
+  this.moreHoveredItem = null;
+}
+ closePreviewDelayed() {
+  this.hoverTimeout = setTimeout(() => {
+    this.closePreview();
+  }, 200);
+}
+
+
+// openExplorePreview(
+//   ev: MouseEvent,
+//   item: any,
+//   type: 'movie' | 'tv'
+// ) {
+//   clearTimeout(this.moreHoverTimeout);
+
+//   const rect = (ev.currentTarget as HTMLElement).getBoundingClientRect();
+
+//   // ⬇ OPEN BELOW POSTER (not centered)
+//   this.morePreviewPosition = {
+//     top: rect.bottom + window.scrollY + 8,
+//     left: rect.left + window.scrollX
+//   };
+
+//   this.moreHoveredItem = item;
+//   this.moreHoveredType = type;
+// }
+
+
+
 }

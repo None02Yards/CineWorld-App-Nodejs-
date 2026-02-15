@@ -58,67 +58,50 @@
       </button>
     </section> -->
 
-
-
       <section id="movie-section" class="mb-5 slider-container position-relative">
-  <button class="arrow left" (click)="scrollLeft()">
-    <i class="fa fa-chevron-left"></i>
-  </button>
-
-  <div #movieSlider class="slider d-flex overflow-auto position-relative">
-
-    <div *ngFor="let item of trendingMovies" class="movie-card">
-      <div class="poster position-relative overflow-hidden">
-
-        <img
-          class="w-100"
-          [src]="'https://image.tmdb.org/t/p/original/' + item?.poster_path"
-          [alt]="item.original_title"
-        />
-
-        <!-- HOVER ONLY ON SEE MORE -->
-        <div class="layer">
-<a class="bg-transparent"
-   (click)="openPreview($event, item, 'movie')">
-
-    <i class="fa text-dark fa-3x fa-play-circle"></i>
-    <p class="text-dark font-weight-bolder">See more!</p>
-  </a>
-</div>
-
-
-      </div>
-
-      <h5 class="text-center mt-2">{{ item.original_title }}</h5>
-    </div>
-
-    <!-- GLOBAL PREVIEW RENDER (OUTSIDE CARDS) -->
-    <!-- <app-hover-preview
-      *ngIf="hoveredItem"
-      [item]="hoveredItem"
-      [mediaType]="hoveredType"
-      [position]="previewPosition">
-    </app-hover-preview> -->
-
-  </div>
-
-  <button class="arrow right" (click)="scrollRight()">
-    <i class="fa fa-chevron-right"></i>
-  </button>
-
-<div class="preview-backdrop"
-     *ngIf="showPreviewOverlay"
-     (click)="closePreview()"></div>
-
-<app-hover-preview
-  *ngIf="showPreviewOverlay"
-  [item]="selectedPreview"
-  [mediaType]="hoveredType"
-  [position]="previewPosition"
-  (close)="closePreview()">
-</app-hover-preview>
-
-</section>
+        <button class="arrow left" (click)="scrollLeft()">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+      
+        <div #movieSlider class="slider d-flex overflow-auto position-relative">
+      
+          <div *ngFor="let item of trendingMovies" class="movie-card">
+            <div class="poster position-relative overflow-hidden">
+      
+              <img class="w-100" [src]="'https://image.tmdb.org/t/p/original/' + item?.poster_path"
+                [alt]="item.original_title" />
+      
+              <!-- HOVER ONLY ON SEE MORE -->
+              <div class="layer">
+                <a class="bg-transparent" (click)="openPreview($event, item, 'movie')">
+      
+                  <i class="fa text-dark fa-3x fa-play-circle"></i>
+                  <p class="text-dark font-weight-bolder">See more!</p>
+                </a>
+              </div>
+      
+      
+            </div>
+      
+            <h5 class="text-center mt-2">{{ item.original_title }}</h5>
+          </div>
+      
+      
+      
+      
+        </div>
+      
+        <div class="preview-backdrop" *ngIf="showPreviewOverlay" (click)="closePreview()"></div>
+      
+        <app-hover-preview *ngIf="showPreviewOverlay" [item]="selectedPreview" [mediaType]="hoveredType"
+          [position]="previewPosition" (close)="closePreview()">
+        </app-hover-preview>
+      
+        <button class="arrow right" (click)="scrollRight()">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+      
+      </section>
 
 
 
@@ -128,20 +111,38 @@
       <div class=" container">
         <h3 class="section-title mt-5">More to CineWorld</h3>
         <div class="Border w-25"></div>
-
+    
         <div class="row">
           <div *ngFor="let section of moreToExplore" class="col-md-4 mb-4">
             <div class="editor-card p-3  rounded shadow-sm h-100">
               <h4 class="editor-title mb-3">{{ section.title }}</h4>
-        
+    
               <div class="d-flex flex-wrap gap-3 justify-content-start">
-                <div *ngFor="let movie of section.posters | slice:0:3" class="poster-box"
-                  (click)="goToDetails(movie, section.type, $event)">
-                  <img [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" [alt]="movie.title || movie.name"
-                    class="img-fluid rounded" />
-                </div>
-        
-        
+                <!-- <div *ngFor="let movie of section.posters | slice:0:3" class="poster-box"
+                      (click)="goToDetails(movie, section.type, $event)">
+                      <img [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" [alt]="movie.title || movie.name"
+                        class="img-fluid rounded" />
+                    </div> -->
+    
+    
+               <div
+  *ngFor="let movie of section.posters | slice:0:3"
+  class="poster-box"
+  (mouseenter)="onMoreHover($event, movie, section.type)"
+  (mouseleave)="clearMoreHover()"
+  (click)="goToDetails(movie, section.type, $event)"
+>
+
+  <img
+    [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
+    [alt]="movie.title || movie.name"
+    class="img-fluid rounded"
+  />
+
+</div>
+
+    
+    
               </div>
               <a [href]="section.link" class="editor-link d-block mt-3 text-primary">
                 {{ section.linkText }}
@@ -150,6 +151,15 @@
           </div>
         </div>
       </div>
+      <app-hover-preview *ngIf="moreHoveredItem" 
+       [item]="moreHoveredItem" 
+       [mediaType]="moreHoveredType"
+        [position]="morePreviewPosition" (mouseenter)="onPreviewEnter()" 
+        (mouseleave)="onPreviewLeave()"
+        (close)="moreHoveredItem = null">
+      </app-hover-preview>
+    
+    
     </section>
 
 
@@ -205,13 +215,15 @@
   </div>
 </section>
 
-
-
+ 
     <app-free-to-watch *ngIf="!isKidsLayout"></app-free-to-watch>
 
     <app-celebrities *ngIf="!isKidsLayout"></app-celebrities>
 
     <app-latest-trailers *ngIf="!isKidsLayout"></app-latest-trailers>
 
+
   </div>
+<!-- MINI PREVIEW OVERLAY -->
+
 </ng-container>
