@@ -383,3 +383,151 @@ position: relative;
   margin-bottom: 70px;
 }
 
+
+// comments
+
+
+.comments-wrapper {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.comments-card {
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+.comment-textarea {
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  resize: none;
+}
+
+.comment-textarea:focus {
+  background: #1f1f1f;
+  border-color: #ffc107;
+  box-shadow: none;
+  color: white;
+}
+
+.comment-item {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.comment-user {
+  color: #ffc107;
+}
+
+.comment-text {
+  color: #ddd;
+  line-height: 1.6;
+}
+
+.avatar-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffc107, #ff6f00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: black;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.like-btn {
+  background: transparent;
+  border: none;
+  color: #d88c11;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.like-btn:hover {
+  color: #ffc107;
+}
+
+.reply-section {
+  border-left: 2px solid rgba(255,255,255,0.05);
+  padding-left: 15px;
+}
+
+.reply-item {
+  background: #1c1c1c;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+
+.engagement-actions {
+  margin-top: 20px;
+}
+
+.engage-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ccc;
+  padding: 8px 18px;
+  border-radius: 30px;
+  transition: 0.2s ease;
+}
+
+.engage-btn:hover {
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+
+.auth-alert {
+  position: relative;
+  background: linear-gradient(135deg, #1c1c1c, #111);
+  border-left: 4px solid #ffc107;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  color: #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeSlide 0.3s ease;
+}
+
+.login-link {
+  color: #ffc107;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #ff9800;
+}
+
+.close-alert {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.close-alert:hover {
+  color: #fff;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

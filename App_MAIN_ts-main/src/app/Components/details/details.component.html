@@ -91,7 +91,18 @@
           </div>
         </div>
       </div>
+<!-- Stylish Auth Alert -->
+<div *ngIf="showAuthAlert" class="auth-alert">
+  <span>
+    Please 
+    <a (click)="goToLogin()" class="login-link">Login</a> 
+    to like or dislike this content 🎬
+  </span>
 
+  <button class="close-alert" (click)="showAuthAlert = false">
+    <i class="fa fa-times"></i>
+  </button>
+</div>
       <!-- Stats -->
       <div class="stats mt-4">
         <p>⭐ Vote: <strong>{{ itemDetails.vote_average }}</strong></p>
@@ -100,6 +111,24 @@
         <p>📅 Release date: <strong>{{ itemDetails.release_date || itemDetails.first_air_date }}</strong></p>
       </div>
 
+      <!-- Engagement Actions -->
+<div class="engagement-actions mt-4 d-flex gap-3">
+
+  <button
+    class="engage-btn"
+    (click)="handleAuthAction()">
+    <i class="fa fa-thumbs-o-up me-2"></i>
+    👍
+  </button>
+
+  <button
+    class="engage-btn"
+    (click)="handleAuthAction()">
+    <i class="fa fa-thumbs-o-down me-2"></i>
+    👎
+  </button>
+
+</div>
     </div>
   </div>
 
@@ -141,6 +170,10 @@
     </div>
   </div>
 </div>
+
+
+
+
 
 
 <!-- Cast Section -->
@@ -198,8 +231,138 @@
 </div>
 
 <!-- Overview -->
-      <div class="overview-section text-center my-5 px-3">
-        <h3 class="overview-title">Overview 📝</h3>
-        <p class="overview-text mt-3">{{ itemDetails.overview }}</p>
+<div class="overview-section text-center my-5 px-3">
+  <h3 class="overview-title">Overview 📝</h3>
+  <p class="overview-text mt-3">{{ itemDetails.overview }}</p>
+</div>
+
+<!-- COMMENTS SECTION -->
+<div class="comments-wrapper my-5">
+  <div class="comments-card p-4 rounded">
+
+    <h4 class="mb-4 border-start border-3 ps-3 border-warning">
+      Comments 💬
+    </h4>
+
+    <!-- Add Comment -->
+    <div class="comment-input mb-4">
+
+      <textarea
+        class="form-control comment-textarea"
+        rows="3"
+        maxlength="200"
+        placeholder="Share your thoughts about this movie..."
+        [(ngModel)]="newComment"
+        (input)="updateCharCount()">
+      </textarea>
+
+      <div class="d-flex justify-content-between align-items-center mt-2">
+        <small class="text-muted">
+          {{ remainingChars }} characters left
+        </small>
+
+        <button
+          class="btn btn-warning px-4"
+          [disabled]="!newComment.trim()"
+          (click)="submitComment()">
+          Post
+        </button>
       </div>
+    </div>
+
+    <!-- Comment List -->
+<div *ngFor="let comment of comments" class="comment-item mb-3 p-3 rounded">
+
+  <div class="d-flex align-items-start gap-3">
+
+    <div class="avatar-circle">
+      {{ comment.username.charAt(0) }}
+    </div>
+
+    <div class="flex-grow-1">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <strong class="comment-user">{{ comment.username }}</strong>
+        <small class="text-muted">
+          {{ comment.createdAt | date:'mediumDate' }}
+        </small>
+      </div>
+
+      <!-- VIEW MODE -->
+      <p *ngIf="!comment.editing" class="mt-2 mb-2 comment-text">
+        {{ comment.text }}
+      </p>
+
+      <!-- EDIT MODE -->
+      <div *ngIf="comment.editing">
+        <textarea
+          class="form-control comment-textarea"
+          [(ngModel)]="comment.editText">
+        </textarea>
+
+        <div class="mt-2">
+          <button class="btn btn-sm btn-warning me-2" (click)="saveEdit(comment)">Save</button>
+          <button class="btn btn-sm btn-secondary" (click)="cancelEdit(comment)">Cancel</button>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="d-flex align-items-center gap-3 mt-2">
+
+        <button class="like-btn" (click)="toggleLike(comment)">
+          <i class="fa"
+            [ngClass]="comment.liked ? 'fa-thumbs-up text-warning' : 'fa-thumbs-o-up'">
+          </i>
+          {{ comment.likes }}
+        </button>
+
+        <button
+          *ngIf="comment.ownerId === guestId"
+          class="like-btn text-info"
+          (click)="enableEdit(comment)">
+          Edit
+        </button>
+
+        <button
+          *ngIf="comment.ownerId === guestId"
+          class="like-btn text-danger"
+          (click)="deleteComment(comment.id)">
+          Delete
+        </button>
+
+      </div>
+
+      <!-- REPLIES -->
+      <div class="reply-section mt-3 ms-4">
+
+        <div *ngFor="let reply of comment.replies" class="reply-item p-2 mb-2 rounded">
+          <strong class="comment-user">{{ reply.username }}</strong>
+          <p class="mb-1">{{ reply.text }}</p>
+        </div>
+
+        <!-- Add Reply -->
+        <div class="d-flex gap-2 mt-2">
+          <input
+            #replyInput
+            type="text"
+            class="form-control bg-dark text-white"
+            placeholder="Reply..."
+          />
+          <button
+            class="btn btn-sm btn-warning"
+            (click)="addReply(comment, replyInput.value); replyInput.value=''">
+            Reply
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>
+
+
 </div>

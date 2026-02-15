@@ -44,6 +44,19 @@ customLists: CustomList[] = [];
   Trailer = '';
   showGenre = false;
 
+
+ comments: any[] = [];
+newComment: string = '';
+maxChars: number = 200;
+remainingChars: number = 200;
+showAuthAlert = false;
+
+guestId!: number;
+guestExpiry!: number;
+guestDurationHours = 24; // change to 48 if needed
+// guestId = Math.floor(1000 + Math.random() * 9000);
+
+
   @ViewChild('similarSlider', { static: false }) similarSlider!: ElementRef;
   similarItems: any[] = [];
   showLeftArrow = false;
@@ -64,6 +77,7 @@ customLists: CustomList[] = [];
 
   constructor(
     private _Router: Router,
+    private router: Router,
     private _DataService: DataService,
     private _ActivatedRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
@@ -100,14 +114,157 @@ get wlItem(): WatchlistItem {
 }
 
 
+updateCharCount(): void {
+  this.remainingChars = this.maxChars - this.newComment.length;
+}
+
+submitComment(): void {
+
+  if (Date.now() > this.guestExpiry) {
+    alert('Guest session expired. Please refresh or create an account.');
+    return;
+  }
+
+  if (!this.newComment.trim()) return;
+
+  const comment = {
+    id: Date.now(),
+    username: `Guest#${this.guestId}`,
+    ownerId: this.guestId,
+    text: this.newComment,
+    createdAt: new Date(),
+    likes: 0,
+    liked: false,
+    replies: []
+  };
+
+  this.comments.unshift(comment);
+
+  this.newComment = '';
+  this.remainingChars = this.maxChars;
+}
+
+
+
+
+
+
+
+toggleLike(comment: any): void {
+  comment.liked = !comment.liked;
+  comment.likes += comment.liked ? 1 : -1;
+}
+
+deleteComment(commentId: number): void {
+  this.comments = this.comments.filter(c => c.id !== commentId);
+}
+
+enableEdit(comment: any): void {
+  comment.editing = true;
+  comment.editText = comment.text;
+}
+
+saveEdit(comment: any): void {
+  if (!comment.editText.trim()) return;
+  comment.text = comment.editText;
+  comment.editing = false;
+}
+
+cancelEdit(comment: any): void {
+  comment.editing = false;
+}
+
+addReply(comment: any, replyText: string): void {
+  if (!replyText.trim()) return;
+
+  comment.replies.push({
+    id: Date.now(),
+    username: `Guest#${this.guestId}`,
+    ownerId: this.guestId,
+    text: replyText,
+    createdAt: new Date(),
+    likes: 0,
+    liked: false
+  });
+}
+
+createNewGuest(): void {
+  const id = Math.floor(1000 + Math.random() * 9000);
+  const expiry = Date.now() + this.guestDurationHours * 60 * 60 * 1000;
+
+  localStorage.setItem('guestId', id.toString());
+  localStorage.setItem('guestExpiry', expiry.toString());
+
+  this.guestId = id;
+  this.guestExpiry = expiry;
+}
+
+
+
+
+
+
+// handleAuthAction(): void {
+//   // later replace with real auth check
+//   const isLoggedIn = false;
+
+//   if (!isLoggedIn) {
+//     this.openLoginPrompt();
+//   }
+// }
+
+openLoginPrompt(): void {
+  alert('Please login to interact with this content 🎬');
+  // or:
+  // this.router.navigate(['/welcome']);
+}
+
   ngOnInit(): void {
 
     if ((this.watchlist as any).getCustomLists) {
     this.customLists = (this.watchlist as any).getCustomLists();
   } else {
     this.customLists = [];
+    
+  }
+  
+    this.initializeGuest();
+}
+
+initializeGuest(): void {
+  const storedId = localStorage.getItem('guestId');
+  const storedExpiry = localStorage.getItem('guestExpiry');
+
+  const now = Date.now();
+
+  if (storedId && storedExpiry && Number(storedExpiry) > now) {
+    this.guestId = Number(storedId);
+    this.guestExpiry = Number(storedExpiry);
+  } else {
+    this.createNewGuest();
   }
   }
+
+
+handleAuthAction(): void {
+  const isLoggedIn = false; // replace later with real check
+
+  if (!isLoggedIn) {
+    this.showAuthAlert = true;
+
+    setTimeout(() => {
+      this.showAuthAlert = false;
+    }, 4000);
+  }
+}
+
+goToLogin(): void {
+  this.router.navigate(['/welcome']);
+}
+
+
+
+
 
   fetchSimilarItems(): void {
     this._DataService.getSimilar(this.mediaType, this.id).subscribe({
