@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ProfileComponent } from './Components/pages/profile/profile.component';
 import { ManageProfilesComponent } from './Components/pages/profile/manage-profiles/manage-profiles.component';
+import { ProfileGuard } from './guards/profile.guard';
+
 
 import { HomeComponent } from './Components/home/home.component';
 import { NotFoundPageComponent } from './Components/not-found-page/not-found-page.component';
@@ -27,22 +29,28 @@ import { AnimeWatchlistComponent } from './Components/watchlist/anime-watchlist/
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: 'welcome', component: WelcomeComponent },
+
   { path: 'profile', component: ProfileComponent },
   { path: 'manage-profiles', component: ManageProfilesComponent },
 
-  { path: 'home', component: HomeComponent },
+  // { path: 'home', component: HomeComponent },
+{ path: 'home', component: HomeComponent, canActivate: [ProfileGuard] },
+  { path: 'kids', component: KidsComponent, canActivate: [ProfileGuard] },
+{ path: 'watchlist', component: WatchlistComponent, canActivate: [ProfileGuard] },
+  { path: 'watchlist/movies', component: MoviesWatchlistComponent, canActivate: [ProfileGuard] },
+  { path: 'watchlist/tv', component: TvWatchlistComponent, canActivate: [ProfileGuard] },
+  { path: 'watchlist/animes', component: AnimeWatchlistComponent, canActivate: [ProfileGuard] },
+ 
+  // custom list creation & detail view
 
-  { path: 'watchlist', component: WatchlistComponent},
+ { path: 'create-list', component: CreateListComponent, canActivate: [ProfileGuard] },
+  { path: 'create-list/:id', component: CreateListComponent, canActivate: [ProfileGuard] },
+// { path: 'watchlist/custom', component: CustomListDetailComponent },
+// { path: 'watchlist/custom', component: CreateListComponent },
 
-  { path: 'watchlist/movies', component: MoviesWatchlistComponent },
-  { path: 'watchlist/tv', component: TvWatchlistComponent },
-{ path: 'watchlist/animes', component: AnimeWatchlistComponent }, // ✅ add this
- // custom list creation & detail view
+  { path: 'list/:id', component: CustomListDetailComponent, canActivate: [ProfileGuard] },
 
-{ path: 'watchlist/custom', component: CustomListDetailComponent },
-{ path: 'watchlist/custom', component: CreateListComponent },
-
-{ path: 'list/:id', component: CustomListDetailComponent },
+// { path: 'list/:id', component: CustomListDetailComponent },
     // { path: '', redirectTo: 'movies', pathMatch: 'full' },
  { path: 'create-list/:id', component: CreateListComponent },
     { path: 'create-list', component: CreateListComponent },

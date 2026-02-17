@@ -34,6 +34,7 @@ import { HomeLayoutModule } from './Components/layouts/home-layout/home-layout.m
 import { KidsComponent } from './Components/kids/kids.component';
 import { ProfileComponent } from './Components/pages/profile/profile.component';
 import { ManageProfilesComponent } from './Components/pages/profile/manage-profiles/manage-profiles.component';
+import { AccountDropdownComponent } from './shared/account-dropdown/account-dropdown.component';
 // import { NewsletterSubscribeComponent } from './shared/newsletter-subscribe/newsletter-subscribe.component';
 
 
@@ -61,6 +62,7 @@ import { ManageProfilesComponent } from './Components/pages/profile/manage-profi
 KidsComponent,
 ProfileComponent,
 ManageProfilesComponent,
+AccountDropdownComponent,
 // NewsletterSubscribeComponent,
 
   ],
