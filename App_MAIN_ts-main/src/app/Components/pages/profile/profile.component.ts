@@ -31,6 +31,8 @@ export class ProfileComponent implements OnInit {
   // }
 
   goToProfile(profile: Profile): void {
+     this.profileService.setActiveProfile(profile);
+
   if (profile.isKids) {
     this.router.navigate(['/kids']);
   } else {

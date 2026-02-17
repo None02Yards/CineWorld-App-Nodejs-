@@ -14,6 +14,9 @@ export interface Profile {
 @Injectable({
   providedIn: 'root'
 })
+
+
+
 export class ProfileService {
   private storageKey = 'userProfiles';
 
@@ -21,6 +24,7 @@ export class ProfileService {
     { id: 1, name: 'Home', image: 'assets/icons/Zulogo.png',  isSystem: true },
     { id: 2, name: 'Kids', image: 'assets/icons/logokids.jpg', isKids: true,  isSystem: true }
   ];
+
 
   private profiles: Profile[] = this.loadProfiles();
   private profilesSubject = new BehaviorSubject<Profile[]>(this.profiles);
@@ -31,10 +35,42 @@ export class ProfileService {
   //   const data = localStorage.getItem(this.storageKey);
   //   return data ? JSON.parse(data) : this.defaultProfiles;
   // }
+private activeProfileSubject = new BehaviorSubject<Profile | null>(null);
+  activeProfile$ = this.activeProfileSubject.asObservable();
+
+   private STORAGE_KEY = 'activeProfile';
+
+  private loadActiveProfile() {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    if (stored) {
+      this.activeProfileSubject.next(JSON.parse(stored));
+    }
+  }
+
+     constructor() {
+    this.loadActiveProfile();
+  }
+
+ setActiveProfile(profile: Profile): void {
+  this.activeProfileSubject.next(profile);
+  localStorage.setItem(this.STORAGE_KEY, JSON.stringify(profile));
+}
+
+getActiveProfile(): Profile | null {
+  return this.activeProfileSubject.value;
+}
+
+clearActiveProfile(): void {
+  this.activeProfileSubject.next(null);
+  localStorage.removeItem(this.STORAGE_KEY);
+}
+
 
 
   private loadProfiles(): Profile[] {
   const data = localStorage.getItem(this.storageKey);
+
+
 
   if (!data) {
     return this.defaultProfiles;
@@ -117,4 +153,7 @@ deleteProfile(profile: Profile) {
     this.profilesSubject.next([...this.profiles]);
     this.saveProfiles();
   }
+
+
+
 }
