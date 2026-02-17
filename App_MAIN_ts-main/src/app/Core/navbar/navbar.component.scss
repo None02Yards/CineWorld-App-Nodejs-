@@ -108,12 +108,35 @@
   
 
   .navbar-inner {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     width: 100%;
     padding: 0 1rem;
+     display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
   }
-  
+
+//   .navbar-inner {
+//   position: relative;
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }
+
+/* Left + Right auto width */
+
+.nav-left-group {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-right {
+  margin-left: auto;
+  gap: 1rem;
+}
   .navbar i {
     color: #c2bbbb; 
     margin: 0.5rem; 
@@ -454,3 +477,5 @@
     margin-top: 20px;
   }
 }
+
+
