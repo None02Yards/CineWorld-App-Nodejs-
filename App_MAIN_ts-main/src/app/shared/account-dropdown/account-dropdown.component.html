@@ -1,0 +1,55 @@
+
+
+<div
+  class="account-wrapper"
+  (mouseenter)="openDropdown()"
+  (mouseleave)="closeDropdown()"
+>
+
+  <!-- PROFILE BUTTON -->
+<div class="account-trigger">
+  <img
+    class="profile-icon"
+    [src]="activeProfile?.image"
+    alt="profile"
+  />
+  <i
+    class="fa fa-caret-down caret-icon"
+    [class.open]="isOpen">
+  </i>
+</div>
+
+  <!-- DROPDOWN -->
+  <div class="account-dropdown" *ngIf="isOpen">
+
+    <!-- ACTIVE PROFILE -->
+    <div class="dropdown-section profile-active">
+      <div class="profile-item">
+        <img [src]="activeProfile?.image" />
+        <span>{{ activeProfile?.name }}</span>
+      </div>
+    </div>
+
+    <div class="dropdown-divider"></div>
+
+    <!-- DYNAMIC ITEMS -->
+    <div class="dropdown-section">
+      <div
+        class="dropdown-item"
+        *ngFor="let item of dropdownItems"
+        (click)="handleAction(item.action)"
+      >
+        <i class="fa" [ngClass]="item.icon"></i>
+        <span>{{ item.label }}</span>
+      </div>
+    </div>
+
+    <div class="dropdown-divider"></div>
+
+    <!-- LOGOUT -->
+    <div class="dropdown-item logout" (click)="logout()">
+      Sign out of Netflix
+    </div>
+
+  </div>
+</div>
