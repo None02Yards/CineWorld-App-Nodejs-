@@ -1,17 +1,17 @@
 
 
-
 <nav
-  *ngIf="!hideNavbar"
+  *ngIf="!hideNavbar && activeProfile"
   class="navbar fixed-top navbar-expand-lg navbar-dark scroll"
   [ngClass]="{
     'scrolled': isScrolled,
     'media-margin': isMediaPage,
     'no-bg-navbar': isWatchlistPage && !isScrolled,
     'condensed': navCondensed,
-    'hidden-until-hero': hideUntilHeroEnd && isDetailsPage
-  }"
->
+    'hidden-until-hero': hideUntilHeroEnd && isDetailsPage,
+    'kids-navbar': isKidsProfile
+  }">
+  
   <a
     class="navbar-brand mt-3 logo"
     routerLink="/home"
@@ -31,48 +31,39 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div
-    [ngClass]="{
-      collapse: true,
-      'navbar-collapse': true,
-      show: !isCollapsed,
-      'justify-content-between': true
-    }"
-    class="mt-4"
-    id="collapsibleNavId"
-  >
-    <!-- LEFT SIDE NAV -->
+
+
+  <div [ngClass]="{
+        collapse: true,
+        'navbar-collapse': true,
+        show: !isCollapsed,
+        'justify-content-between': true
+      }" class="mt-4" id="collapsibleNavId">
+    
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <!-- Home -->
-      <li
-        class="nav-item"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        *ngIf="showMenuItem"
-      >
+     
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="showMenuItem">
         <a class="nav-link" routerLink="/home">Home</a>
       </li>
-
-     <li 
-  class="nav-item dropdown" 
-  routerLinkActive="active"
-  [routerLinkActiveOptions]="{ exact: false }"
-  *ngIf="showMenuItem">
   
-  <a class="nav-link dropdown-toggle" (click)="navigateWithFragment('movie-section')" role="button">Movies</a>
+      <li class="nav-item dropdown" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }"
+        *ngIf="showMenuItem">
   
-  <div class="dropdown-menu">
-    <a class="dropdown-item" routerLink="/movies/now_playing/1" routerLinkActive="active">Now Playing</a>
-    <a class="dropdown-item" routerLink="/movies/popular/1" routerLinkActive="active">Popular</a>
-    <a class="dropdown-item" routerLink="/movies/top_rated/1" routerLinkActive="active">Top Rated</a>
-    <a class="dropdown-item" routerLink="/movies/upcoming/1" routerLinkActive="active">Upcoming</a>
-  </div>
-</li>
-
-
-      <!-- TV Shows Dropdown -->
+        <a class="nav-link dropdown-toggle" (click)="navigateWithFragment('movie-section')" role="button">Movies</a>
+  
+        <div class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/movies/now_playing/1" routerLinkActive="active">Now Playing</a>
+          <a class="dropdown-item" routerLink="/movies/popular/1" routerLinkActive="active">Popular</a>
+          <a class="dropdown-item" routerLink="/movies/top_rated/1" routerLinkActive="active">Top Rated</a>
+          <a class="dropdown-item" routerLink="/movies/upcoming/1" routerLinkActive="active">Upcoming</a>
+        </div>
+      </li>
+  
+  
+     
       <li class="nav-item dropdown" routerLinkActive="active" *ngIf="showMenuItem">
-        <a class="nav-link dropdown-toggle"   (click)="navigateWithFragment('tv-section')" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" (click)="navigateWithFragment('tv-section')" role="button"
+          aria-haspopup="true" aria-expanded="false">
           TV Shows
         </a>
         <div class="dropdown-menu">
@@ -82,111 +73,87 @@
           <a class="dropdown-item" routerLink="/tvshows/airing_today/1" routerLinkActive="active">Airing Today</a>
         </div>
       </li>
-
-      <!-- People -->
-    <li
-  class="nav-item"
-  [ngClass]="{ 'active': isCelebsPage }"
-  *ngIf="showMenuItem"
->
-  <a class="nav-link" routerLink="/people/1">Celebs</a>
-</li>
-<!-- Kids -->
-<li
-  class="nav-item"
-  routerLinkActive="active"
-  *ngIf="showMenuItem"
->
-  <a class="nav-link" routerLink="/kids">Kids</a>
-</li>
+  
+     
+      <li class="nav-item" [ngClass]="{ 'active': isCelebsPage }" *ngIf="showMenuItem">
+        <a class="nav-link" routerLink="/people/1">Celebs</a>
+      </li>
+      
+      <li class="nav-item" routerLinkActive="active" *ngIf="showMenuItem">
+        <a class="nav-link" routerLink="/kids">Kids</a>
+      </li>
     </ul>
-
-    <!-- RIGHT SIDE: Search & Social -->
+ 
     <ul class="navbar-nav ms-auto d-flex align-items-center">
-      <!-- Search -->
       <li class="nav-item" *ngIf="showMenuItem && showSearch">
         <form class="form-inline my-2 my-lg-0" (submit)="redirectToSearch()">
           <div class="search-container">
-            <!-- Custom Dropdown (initially hidden until hover) -->
-             <div class="dropdown-select">
-              <!-- <select [(ngModel)]="searchType" name="searchType">
+            
+            <div class="dropdown-select">
+  
+              <select (change)="selectSearchType($any($event.target).value)">
                 <option value="multi">All 🎬</option>
                 <option value="person">Celebs 👤</option>
                 <option value="keyword">Keywords 🔖</option>
-              </select>  -->
-
-                            <select (change)="selectSearchType($any($event.target).value)">
-                  <option value="multi">All 🎬</option>
-                  <option value="person">Celebs 👤</option>
-                  <option value="keyword">Keywords 🔖</option>
-                </select>
-
-            </div> 
-
-
-
-
-            <!-- Input field -->
-  <input
-  type="text"
-  [formControl]="searchControl"
-  placeholder="Search anything..."
-  (click)="$event.stopPropagation()"
->
-
-              <div class="search-dropdown" *ngIf="showDropdown">
-  <div
-    class="search-item"
-    *ngFor="let item of searchResults"
-    (click)="goToResult(item)"
-  >
-
-    <img
-      [src]="'https://image.tmdb.org/t/p/w200/' + (item.poster_path || item.profile_path)"
-      alt=""
-    />
-
-    <div class="search-info">
-      <h6>{{ item.title || item.name }}</h6>
-
-      <small>
-        {{ item.release_date?.substring(0,4) || item.first_air_date?.substring(0,4) }}
-        ⭐ {{ item.vote_average | number:'1.1-1' }}
-      </small>
-    </div>
-
-  </div>
-
-  <div class="view-all" (click)="redirectToSearch()">
-    View All Results →
-  </div>
-</div>
-
-
-            <!-- Search button -->
+              </select>
+  
+            </div>
+  
+  
+  
+  
+            
+            <input type="text" [formControl]="searchControl" placeholder="Search anything..."
+              (click)="$event.stopPropagation()">
+  
+            <div class="search-dropdown" *ngIf="showDropdown">
+              <div class="search-item" *ngFor="let item of searchResults" (click)="goToResult(item)">
+  
+                <img [src]="'https://image.tmdb.org/t/p/w200/' + (item.poster_path || item.profile_path)" alt="" />
+  
+                <div class="search-info">
+                  <h6>{{ item.title || item.name }}</h6>
+  
+                  <small>
+                    {{ item.release_date?.substring(0,4) || item.first_air_date?.substring(0,4) }}
+                    ⭐ {{ item.vote_average | number:'1.1-1' }}
+                  </small>
+                </div>
+  
+              </div>
+  
+              <div class="view-all" (click)="redirectToSearch()">
+                View All Results →
+              </div>
+            </div>
+  
+  
+          
             <button type="submit" class="search-btn">
               <i class="fa fa-search"></i>
             </button>
           </div>
         </form>
       </li>
-
-
-      <!-- Watchlist -->
+  
+  
+      
       <li class="nav-item" *ngIf="showSearch">
-        <a routerLink="/watchlist" class="nav-link text-danger font-weight-bold ms-3 d-flex align-items-center" routerLinkActive="active">
+        <a routerLink="/watchlist" class="nav-link text-danger font-weight-bold ms-3 d-flex align-items-center"
+          routerLinkActive="active">
           <i class="fa fa-bookmark me-1" style="color: #860202; font-size: 1.5rem;"></i>
         </a>
       </li>
-
-      <!-- Social / Notifications -->
+  
+     
       <li class="nav-item" *ngIf="isWelcomePage">
         <i class="fab fa-facebook ms-2"></i>
         <i class="fab fa-twitter ms-2"></i>
         <i class="fab fa-youtube ms-2"></i>
         <i class="fab fa-instagram ms-2"></i>
       </li>
-
+  
+  
       <li class="nav-item" *ngIf="!isWelcomePage">
         <div class="notification-bell">
           <i class="fas fa-bell"></i>
@@ -194,5 +161,10 @@
         </div>
       </li>
     </ul>
+  
+    <app-account-dropdown *ngIf="showAccountDropdown" [activeProfile]="activeProfile" [profiles]="profiles">
+    </app-account-dropdown>
+  
+  
   </div>
 </nav>

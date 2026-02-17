@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { of, combineLatest, BehaviorSubject } from 'rxjs';
 import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { ProfileService, Profile } from 'src/app/Services/profile.service';
 
 
 
@@ -14,7 +15,18 @@ import { FormControl, FormBuilder, FormGroup } from '@angular/forms';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
+
+
+
 export class NavbarComponent implements OnInit, OnDestroy {
+
+  isDropdownOpen = false;
+  showAccountDropdown = true;
+
+ profiles: Profile[] = [];
+activeProfile: Profile | null = null;
+isKidsProfile = false;
+
   showMenuItem = true;
   showSearch = false;
   isCollapsed = true;
@@ -34,6 +46,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isWatchlistPage = false;
   isWatchMoviesPage=false;
   isWatchTvPage=false;
+
+isMobileMenuOpen = false;
+
 
   isMediaPage = false;
   hideNavbar = false;
@@ -96,175 +111,141 @@ private searchType$ = new BehaviorSubject<'multi' | 'person' | 'keyword'>('multi
 
 constructor(
   private _Router: Router,
+  private router: Router,
   private _DataService: DataService,
-  private fb: FormBuilder
+  private fb: FormBuilder,
+  private profileService: ProfileService
 ) {}
 
 
-  ngOnInit(): void {
-    const initialUrl = this._Router.url;
-    this.isWelcomePage = initialUrl.includes('/welcome');
-    this.hideNavbar = false; 
-    this.showMenuItem = true;
-    this.showSearch = false;
-    
-    this.searchForm = this.fb.group({
-  query: [''],
-  type: ['multi']
-});
 
+ngOnInit(): void {
 
-    this._Router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event) => {
-        const nav = event as NavigationEnd;
-        this.updateNavbarFlags(nav.urlAfterRedirects);
-        this.setupHeroObserverIfNeeded();
-      });
-    this.setupHeroObserverIfNeeded();
+  const initialUrl = this._Router.url;
 
+  /* =========================================
+     PROFILE HANDLING (single subscription)
+  ========================================== */
 
-//     combineLatest([
-// this.searchControl.valueChanges.pipe(
-//     debounceTime(300),
-//     distinctUntilChanged()
-//   ),
-//   this.searchType$
-// ])
+  this.profileService.activeProfile$
+    .subscribe(profile => {
 
-// .pipe(
-//   switchMap(([query, type]) => {
-
-//     if (!query || query.length < 2) {
-//       this.searchResults = [];
-//       this.showDropdown = false;
-//       return of(null);
-//     }
-
-//     return this._DataService.searchByType(query, type);
-//   })
-// )
-// .subscribe((res: any) => {
-
-//   if (!res?.results) return;
-
-//   const currentType = this.searchForm.get('type')?.value;
-
-//   this.searchResults = res.results
-//     .filter((item: any) => {
-
-//       if (currentType === 'person') {
-//         return item.profile_path;
-//       }
-
-//       return (
-//         ['movie', 'tv', 'person'].includes(item.media_type) &&
-//         (item.poster_path || item.profile_path)
-//       );
-//     })
-//     .slice(0, 6);
-
-//   this.showDropdown = this.searchResults.length > 0;
-
-
-
-combineLatest([
-  this.searchControl.valueChanges.pipe(
-    debounceTime(300),
-    distinctUntilChanged()
-  ),
-  this.searchType$
-])
-.pipe(
-  switchMap(([query, type]) => {
-
-    if (!query || query.length < 2) {
-      this.searchResults = [];
-      this.showDropdown = false;
-      return of(null);
-    }
-
-    return this._DataService.searchByType(query, type);
-  })
-)
-.subscribe((res: any) => {
-
-  if (!res?.results) return;
-
-  const type = this.searchType$.value;
-
-  this.searchResults = res.results
-    .filter((item: any) => {
-
-      // Person search does not return media_type
-      if (type === 'person') {
-        return item.profile_path;
+      if (!profile) {
+        this._Router.navigate(['/profile']);
+        return;
       }
 
-      return (
-        ['movie', 'tv', 'person'].includes(item.media_type) &&
-        (item.poster_path || item.profile_path)
-      );
+      this.activeProfile = profile;
+      this.isKidsProfile = !!profile.isKids;
+    });
+
+
+  /* =========================================
+     INITIAL NAVBAR STATE
+  ========================================== */
+
+  this.isWelcomePage = initialUrl.includes('/welcome');
+  this.hideNavbar = false;
+  this.showMenuItem = true;
+  this.showSearch = false;
+
+  this.searchForm = this.fb.group({
+    query: [''],
+    type: ['multi']
+  });
+
+  /* =========================================
+     ACCOUNT DROPDOWN VISIBILITY
+  ========================================== */
+
+  this.showAccountDropdown =
+    !initialUrl.includes('/welcome') &&
+    !initialUrl.includes('/profile') &&
+    !initialUrl.includes('/manage-profiles');
+
+
+  /* =========================================
+     ROUTER LISTENER (Typed Properly)
+  ========================================== */
+
+  this._Router.events
+    .pipe(
+      filter((event): event is NavigationEnd =>
+        event instanceof NavigationEnd
+      )
+    )
+    .subscribe(event => {
+
+      const url = event.urlAfterRedirects;
+
+      this.updateNavbarFlags(url);
+      this.setupHeroObserverIfNeeded();
+
+      // 👇 Control account dropdown visibility dynamically
+      this.showAccountDropdown =
+        !url.includes('/welcome') &&
+        !url.includes('/profile') &&
+        !url.includes('/manage-profiles');
+    });
+
+  this.setupHeroObserverIfNeeded();
+
+
+  /* =========================================
+     SEARCH LOGIC
+  ========================================== */
+
+  combineLatest([
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ),
+    this.searchType$
+  ])
+  .pipe(
+    switchMap(([query, type]) => {
+
+      if (!query || query.length < 2) {
+        this.searchResults = [];
+        this.showDropdown = false;
+        return of(null);
+      }
+
+      return this._DataService.searchByType(query, type);
     })
-    .slice(0, 6);
+  )
+  .subscribe((res: any) => {
 
-  this.showDropdown = this.searchResults.length > 0;
+    if (!res?.results) return;
+
+    const type = this.searchType$.value;
+
+    this.searchResults = res.results
+      .filter((item: any) => {
+
+        if (type === 'person') {
+          return item.profile_path;
+        }
+
+        return (
+          ['movie', 'tv', 'person'].includes(item.media_type) &&
+          (item.poster_path || item.profile_path)
+        );
+      })
+      .slice(0, 6);
+
+    this.showDropdown = this.searchResults.length > 0;
+  });
 
 
-    this.searchForm = this.fb.group({
-  query: [''],
-  type: ['multi']
-});
+  // Final initial navbar update
+  this.updateNavbarFlags(initialUrl);
+}
 
-
-
-});
-
-
-
-    // initially
-    this.updateNavbarFlags(this._Router.url);
-  }
 
   ngOnDestroy(): void {
     this.teardownHeroObserver();
   }
-
-  // private updateNavbarFlags(currentUrl: string): void {
-  //   this.isWelcomePage = currentUrl.includes('/welcome') || currentUrl.includes('/profile');
-
-  //   // 1) Explicitly track the two watchlist children:
-  //   // this.isWatchMoviesPage = currentUrl.includes('/watchlist/movies');
-  //   // this.isWatchTvPage     = currentUrl.includes('/watchlist/tv');
-  //   this.isWatchlistPage   = currentUrl.includes('/watchlist');
-
-  //   this.isMediaPage = currentUrl.includes('/movies') || currentUrl.includes('/tvshows') || currentUrl.includes('/search') || currentUrl.includes('/home') || currentUrl.includes('/watchlist/tv') || currentUrl.includes('/watchlist/movies');
-
-  //   const isHomePage = currentUrl === '/' || currentUrl === '/home';
-  //   this.showSearch = !(this.isWelcomePage || isHomePage);
-  //   this.showMenuItem = !this.isWelcomePage;
-
-  //   const isPersonDetailsPage = currentUrl.includes('/person/');
-
-  //   this.isCelebsPage = currentUrl.includes('/people') || isPersonDetailsPage;
-
-  //   const isCustomListPage = currentUrl.includes('/watchlist/custom');
-  //   const isCreateListPage = currentUrl.includes('/watchlist/create');
-
-  //   this.showSearch = !(this.isWelcomePage || isHomePage) || isCustomListPage || isCreateListPage;
-  //   this.showMenuItem = !this.isWelcomePage;
-
-  //   //  Only hide on scroll for main /watchlist page, NOT its children
-  //   this.hideNavbar = false;
-
-  //   this.isDetailsPage = currentUrl.startsWith('/details/');
-  //   this.navCondensed = false;
-  //   this.hideUntilHeroEnd = false;
-
-  //   // Reset scrolled style if not on details (observer will set it on details)
-  //   if (!this.isDetailsPage) this.isScrolled = false;
-  // }
-
 
 
   private setupHeroObserverIfNeeded(): void {
@@ -324,6 +305,9 @@ combineLatest([
   toggleNavbar(): void {
     this.isCollapsed = !this.isCollapsed;
   }
+
+
+  
 
   toggleDropdown() {
     this.dropdownOpen = !this.dropdownOpen;
@@ -393,7 +377,19 @@ redirectToSearch(): void {
   this.showDropdown = false;
 }
 
+// Avatar-account
 
+getAvatarColor(name?: string): string {
+  if (!name) return '#666';
+
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 65%, 45%)`;
+}
 
 
   goToResult(item: any): void {
@@ -488,4 +484,7 @@ redirectToSearch(): void {
 onDocumentClick() {
   this.showDropdown = false;
 }
+
+
+
 }
