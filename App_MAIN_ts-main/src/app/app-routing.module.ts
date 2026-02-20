@@ -25,73 +25,124 @@ import { AnimeWatchlistComponent } from './Components/watchlist/anime-watchlist/
 
 
 
-
 const routes: Routes = [
+
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: 'welcome', component: WelcomeComponent },
 
   { path: 'profile', component: ProfileComponent },
   { path: 'manage-profiles', component: ManageProfilesComponent },
 
-  // { path: 'home', component: HomeComponent },
-{ path: 'home', component: HomeComponent, canActivate: [ProfileGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [ProfileGuard] },
   { path: 'kids', component: KidsComponent, canActivate: [ProfileGuard] },
-{ path: 'watchlist', component: WatchlistComponent, canActivate: [ProfileGuard] },
+
+  /* WATCHLIST (FLAT ROUTING) */
+  { path: 'watchlist', component: WatchlistComponent, canActivate: [ProfileGuard] },
   { path: 'watchlist/movies', component: MoviesWatchlistComponent, canActivate: [ProfileGuard] },
   { path: 'watchlist/tv', component: TvWatchlistComponent, canActivate: [ProfileGuard] },
   { path: 'watchlist/animes', component: AnimeWatchlistComponent, canActivate: [ProfileGuard] },
- 
-  // custom list creation & detail view
+{ path: 'watchlist/custom', component: CustomListDetailComponent },
+// { path: 'watchlist/custom/:id', component: CustomListDetailComponent },
 
- { path: 'create-list', component: CreateListComponent, canActivate: [ProfileGuard] },
-  { path: 'create-list/:id', component: CreateListComponent, canActivate: [ProfileGuard] },
+  // { path: 'watchlist/custom', component: CustomListDetailComponent, canActivate: [ProfileGuard] },
+  { path: 'watchlist/custom/:id', component: CreateListComponent, canActivate: [ProfileGuard] },
+
+  /* MEDIA */
+  { path: 'movies/:genre/:page', component: MoviesComponent },
+  { path: 'tvshows/:genre/:page', component: TVShowsComponent },
+  { path: 'details/:mediaType/:id', component: DetailsComponent },
+  { path: 'person/:id', component: PersonDetailsComponent },
+  { path: 'people/:page', component: PeopleComponent },
+
+  /* SEARCH */
+  { path: 'search', component: SearchComponent },
+  { path: 'search/:target', component: SearchComponent },
+
+  { path: 'about', component: AboutComponent },
+
+  { path: '**', component: NotFoundPageComponent }
+];
+
+
+
+// const routes: Routes = [
+//   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
+//   { path: 'welcome', component: WelcomeComponent },
+
+//   { path: 'profile', component: ProfileComponent },
+//   { path: 'manage-profiles', component: ManageProfilesComponent },
+
+//   // { path: 'home', component: HomeComponent },
+// { path: 'home', component: HomeComponent, canActivate: [ProfileGuard] },
+//   { path: 'kids', component: KidsComponent, canActivate: [ProfileGuard] },
+
+// { path: 'watchlist', component: WatchlistComponent, canActivate: [ProfileGuard] },
+// { path: 'watchlist/movies', component: MoviesWatchlistComponent, canActivate: [ProfileGuard] },
+// { path: 'watchlist/tv', component: TvWatchlistComponent, canActivate: [ProfileGuard] },
+// { path: 'watchlist/animes', component: AnimeWatchlistComponent, canActivate: [ProfileGuard] },
+
+// { path: 'watchlist/custom', component: CustomListDetailComponent, canActivate: [ProfileGuard] },
+// { path: 'watchlist/custom/:id', component: CreateListComponent, canActivate: [ProfileGuard] },
+
+//   // custom list creation & detail view
+
+//  { path: 'create-list', component: CreateListComponent, canActivate: [ProfileGuard] },
+//   { path: 'create-list/:id', component: CreateListComponent, canActivate: [ProfileGuard] },
 // { path: 'watchlist/custom', component: CustomListDetailComponent },
 // { path: 'watchlist/custom', component: CreateListComponent },
 
-  { path: 'list/:id', component: CustomListDetailComponent, canActivate: [ProfileGuard] },
+//   { path: 'list/:id', component: CustomListDetailComponent, canActivate: [ProfileGuard] },
 
 // { path: 'list/:id', component: CustomListDetailComponent },
-    // { path: '', redirectTo: 'movies', pathMatch: 'full' },
- { path: 'create-list/:id', component: CreateListComponent },
-    { path: 'create-list', component: CreateListComponent },
+//     // { path: '', redirectTo: 'movies', pathMatch: 'full' },
+//  { path: 'create-list/:id', component: CreateListComponent },
+//     { path: 'create-list', component: CreateListComponent },
 
-  {
-    path: 'about', component: AboutComponent, 
-  },
-  {
-    path: 'movies/:genre/:page', component: MoviesComponent, 
-  },
-  {
-    path: 'tvshows/:genre/:page', component: TVShowsComponent, 
-  },
-  {
-  path: 'kids', component: KidsComponent
-  },
+//   {
+//     path: 'about', component: AboutComponent, 
+//   },
+//   {
+//     path: 'movies/:genre/:page', component: MoviesComponent, 
+//   },
+//   {
+//     path: 'tvshows/:genre/:page', component: TVShowsComponent, 
+//   },
+//   {
+//   path: 'kids', component: KidsComponent
+//   },
 
-  {
-    path: 'details/:mediaType/:id', component: DetailsComponent, 
-  },
-  {
-    path: 'person/:id', component: PersonDetailsComponent, 
-  },
-{ path: 'search', component: SearchComponent },
-{ path: 'search/:target', component: SearchComponent }, // legacy fallback
+//   {
+//     path: 'details/:mediaType/:id', component: DetailsComponent, 
+//   },
+//   {
+//     path: 'person/:id', component: PersonDetailsComponent, 
+//   },
+// { path: 'search', component: SearchComponent },
+// { path: 'search/:target', component: SearchComponent }, // legacy fallback
 
-  {
-    path: 'people/:page', component: PeopleComponent,
-  },
+//   {
+//     path: 'people/:page', component: PeopleComponent,
+//   },
 
-  {
-    path: '**', component: NotFoundPageComponent
-  }
+//   {
+//     path: '**', component: NotFoundPageComponent
+//   }
 
 
-];
+// ];
+
+// @NgModule({
+//   imports: [RouterModule.forRoot(routes), RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
+// ],
+//   exports: [RouterModule]
+// })
+// export class AppRoutingModule { }
+
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
-],
+  imports: [
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
+  ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
-
+export class AppRoutingModule {}

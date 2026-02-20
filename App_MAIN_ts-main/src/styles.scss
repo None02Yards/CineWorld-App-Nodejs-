@@ -26,17 +26,7 @@ router-outlet + * {
   html {
   scroll-behavior: smooth;
 }
-// body, html {
-//   overflow-x: hidden;
-//   scroll-behavior: smooth;
-//   background-color: $bgColor;
-//   color: $fontColor;
-//   font-family: 'Open Sans', sans-serif;
-//   font-weight: 400;
 
-//   scrollbar-width: none; 
-//   -ms-overflow-style: none; // IE 10+
-// }
 
 html, body {
   overflow-x: hidden;
@@ -44,7 +34,7 @@ html, body {
   color: $fontColor;
 //   (thin scrollbar)
   scrollbar-width: thin;
-  scrollbar-color: #1a1a1a transparent;
+  scrollbar-color: #2a2727 transparent;
 }
 
 body{         
