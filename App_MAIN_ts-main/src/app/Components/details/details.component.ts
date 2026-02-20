@@ -5,6 +5,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { DataService } from 'src/app/Services/data.service';
+import { MovieService } from 'src/app/Services/movie.service';
+import { TvService } from 'src/app/Services/tv.service';
+
 import { WatchlistService, CustomList, WatchlistItem } from 'src/app/Services/watchlist.service';
 
 interface Movie {
@@ -79,6 +82,8 @@ guestDurationHours = 24; // change to 48 if needed
     private _Router: Router,
     private router: Router,
     private _DataService: DataService,
+    private movieService: MovieService,
+private tvService: TvService,
     private _ActivatedRoute: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private Spinner: NgxSpinnerService,
@@ -200,18 +205,6 @@ createNewGuest(): void {
 }
 
 
-
-
-
-
-// handleAuthAction(): void {
-//   // later replace with real auth check
-//   const isLoggedIn = false;
-
-//   if (!isLoggedIn) {
-//     this.openLoginPrompt();
-//   }
-// }
 
 openLoginPrompt(): void {
   alert('Please login to interact with this content 🎬');
