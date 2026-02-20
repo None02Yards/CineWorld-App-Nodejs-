@@ -100,31 +100,7 @@ getFamilyTVShows(): Observable<any> {
   }
 
   /** "More to Explore" cards */
-  // getMoreToExploreForKids(): Observable<any[]> {
-  //   return forkJoin([this.getKidsMovies(), this.getKidsTVShows()]).pipe(
-  //     map(([movies, shows]: any[]) => [
-  //       {
-  //         title: 'Fun with Animation',
-  //         linkText: 'Watch now',
-  //         link: '#',
-  //         posters: movies.results.slice(0, 6)
-  //       },
-  //       {
-  //         title: 'TV Shows for Kids',
-  //         linkText: 'Browse',
-  //         link: '#',
-  //         posters: shows.results.slice(0, 6)
-  //       },
 
-  //        {
-  //         title: 'Shows for Family',
-  //         linkText: 'Browse',
-  //         link: '#',
-  //         posters: shows.results.slice(0, 6)
-  //       }
-  //     ])
-  //   );
-  // }
 
   getMoreToExploreForKids(): Observable<any[]> {
   return forkJoin([
