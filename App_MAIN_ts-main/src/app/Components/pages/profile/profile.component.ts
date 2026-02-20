@@ -22,13 +22,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // goToProfile(profile: string): void {
-  //   if (profile === 'zu') {
-  //     this.router.navigate(['/home']);
-  //   } else if (profile.toLowerCase() === 'kids') {
-  //     this.router.navigate(['/kids']);
-  //   }
-  // }
 
   goToProfile(profile: Profile): void {
      this.profileService.setActiveProfile(profile);

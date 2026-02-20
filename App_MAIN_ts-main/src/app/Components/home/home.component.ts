@@ -13,6 +13,14 @@ interface Movie {
     id: number; 
 }
 
+interface TrendingItem {
+  id: number;
+  poster_path: string;
+  media_type: 'movie' | 'tv';
+  title?: string;
+  name?: string;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -112,79 +120,95 @@ showPreviewOverlay = false;
   ) {}
 
   ngOnInit(): void {
-    // listen for the floating menu visibility
+
+
     this.menuSub = this.watchlist.menuState$.subscribe(s => {
-      this.overlayOpen = !!s;
-    });
+    this.overlayOpen = !!s;
+  });
 
-    if (!this.isKidsLayout) {
-      this.fetchTrendingData();
-      this.fetchNews();
-      return;
-    }
-
-    // kids-only auto-scroll
-    setInterval(() => this.scrollRight(), 3000);
-    setInterval(() => this.scrollTopTenRight(), 3000);
+  if (!this.isKidsLayout) {
+    this.fetchTrendingData();
+    this.fetchNews();
   }
+
+  //  Auto scroll for BOTH layouts
+  setInterval(() => this.scrollRight(), 3000);
+  setInterval(() => this.scrollTopTenRight(), 3000);
+}
 
   ngOnDestroy(): void {
     this.menuSub?.unsubscribe();
   }
 
 
-  fetchTrendingData(): void {
+fetchTrendingData(): void {
   this.spinner.show();
 
-  this._DataService.getTrending('all').subscribe({
-    next: (data) => {
-      this.spinner.hide();
+  this._DataService
+    .getTrending<any>('all')
+    .subscribe({
+      next: (data) => {
+        this.spinner.hide();
 
-      // base pools (no mutation)
-      const all = (data?.results ?? []).filter((x: any) => !!x?.poster_path);
-      const moviesPool = all.filter((x: any) => x.media_type === 'movie');
-      const showsPool  = all.filter((x: any) => x.media_type === 'tv');
+        const all = (data.results ?? []).filter(x => !!x?.poster_path);
 
-      // clone + shuffle copies (shuffle without mutating originals)
-      const shuffle = <T>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
-      const movies = shuffle(moviesPool);
-      const shows  = shuffle(showsPool);
+        const moviesPool = all.filter(x => x.media_type === 'movie');
+        const showsPool  = all.filter(x => x.media_type === 'tv');
 
-      // --- Slider gets its own copy ---
-      this.trendingMovies = movies; // if you still use this elsewhere
-      this.trendingShows  = shows;  // if you still use this elsewhere
+        const shuffle = <T>(arr: T[]) => [...arr].sort(() => Math.random() - 0.5);
 
-      // Helper: non-mutating “take” from a source
-      const take = (src: any[], start: number, n: number) => src.slice(start, start + n);
+        const movies = shuffle(moviesPool);
+        const shows  = shuffle(showsPool);
 
-      // sections (independent slices)
-      let c1 = take(movies, 0, 3);
-      if (c1.length < 3) c1 = c1.concat(take(shows, 0, 3 - c1.length));
+        this.trendingMovies = movies;
+        this.trendingShows  = shows;
 
-      let c2 = take(shows, 0, 3);
-      if (c2.length < 3) c2 = c2.concat(take(movies, 3, 3 - c2.length));
+        const take = (src: any[], start: number, n: number) =>
+          src.slice(start, start + n);
 
-      let c3 = take(movies, 3, 3);
-      if (c3.length < 3) c3 = c3.concat(take(shows, 3, 3 - c3.length));
+        let c1 = take(movies, 0, 3);
+        if (c1.length < 3) c1 = c1.concat(take(shows, 0, 3 - c1.length));
 
-      // Reassign the whole array so Angular sees the change
-      this.moreToExplore = [
-        { title: 'Staff Picks: What to Watch',     linkText: 'See our picks', link: '#', posters: c1,    type: 'movie' },
-        { title: 'Everything New on Netflix',      linkText: 'See the list',  link: '#', posters: c2,    type: 'tv' },
-        { title: 'Movies That Make Us Love L.A.',  linkText: 'Vote now',      link: '#', posters: c3,    type: 'movie' },
-      ];
-    },
-    error: () => this.spinner.hide()
-  });
+        let c2 = take(shows, 0, 3);
+        if (c2.length < 3) c2 = c2.concat(take(movies, 3, 3 - c2.length));
 
-  this._DataService.getTrending('tv').subscribe({
-    next: (tvRes) => {
-      const validTv = (tvRes?.results ?? []).filter((x: any) => !!x?.poster_path);
+        let c3 = take(movies, 3, 3);
+        if (c3.length < 3) c3 = c3.concat(take(shows, 3, 3 - c3.length));
+
+        this.moreToExplore = [
+          {
+            title: 'Staff Picks: What to Watch',
+            linkText: 'See our picks',
+            link: '#',
+            posters: c1,
+            type: 'movie'
+          },
+          {
+            title: 'Everything New on Netflix',
+            linkText: 'See the list',
+            link: '#',
+            posters: c2,
+            type: 'tv'
+          },
+          {
+            title: 'Movies That Make Us Love L.A.',
+            linkText: 'Vote now',
+            link: '#',
+            posters: c3,
+            type: 'movie'
+          }
+        ];
+      },
+      error: () => this.spinner.hide()
+    });
+
+  this._DataService
+    .getTrending<any>('tv')
+    .subscribe(tvRes => {
+      const validTv = (tvRes.results ?? []).filter(x => !!x?.poster_path);
       this.topTenMovies = validTv.slice(0, 18);
-    }
-  });
+    });
 }
-
 
 
 goToDetails(item: any, type: 'movie' | 'tv', event?: MouseEvent): void {
