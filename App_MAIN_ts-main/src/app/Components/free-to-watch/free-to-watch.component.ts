@@ -13,29 +13,34 @@ export class FreeToWatchComponent implements OnInit {
 
   constructor(private _DataService: DataService) {}
 
+
   ngOnInit(): void {
-    this.fetchFreeToWatchMovies();
-    this.fetchFreeToWatchTV();
-  }
+  this.fetchFreeToWatch('movie');
+  this.fetchFreeToWatch('tv');
+}
 
-  fetchFreeToWatchMovies(): void {
-    const url = `${this._DataService.MovieAPI}/discover/movie?api_key=${this._DataService.APIKey}&with_watch_monetization_types=free&sort_by=popularity.desc`;
-    this._DataService.fetchFromApi(url).subscribe({
-      next: (res) => {
-        this.freeMovies = res.results.filter((m: any) => m.poster_path);
-      },
-      error: (err) => console.error('Free Movies Error:', err)
-    });
-  }
+private shuffleArray<T>(array: T[]): T[] {
+  return [...array].sort(() => Math.random() - 0.5);
+}
 
-  fetchFreeToWatchTV(): void {
-    const url = `${this._DataService.MovieAPI}/discover/tv?api_key=${this._DataService.APIKey}&with_watch_monetization_types=free&sort_by=popularity.desc`;
-    this._DataService.fetchFromApi(url).subscribe({
-      next: (res) => {
-        this.freeTV = res.results.filter((m: any) => m.poster_path);
-      },
-      error: (err) => console.error('Free TV Error:', err)
-    });
-  }
+
+fetchFreeToWatch(type: 'movie' | 'tv'): void {
+  this._DataService.getFreeToWatch(type).subscribe({
+    next: (res: any) => {
+
+      const shuffled = this.shuffleArray(
+        (res.results ?? []).filter((m: any) => m.poster_path)
+      );
+
+      if (type === 'movie') {
+        this.freeMovies = shuffled.slice(0, 12);
+      } else {
+        this.freeTV = shuffled.slice(0, 12);
+      }
+    }
+  });
+}
+
+
 }
 
