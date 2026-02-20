@@ -19,24 +19,28 @@ export class CreateListComponent implements OnInit {
     private watchlistService: WatchlistService
   ) {}
 
-  ngOnInit(): void {
-    this.customLists = this.watchlistService.getCustomLists();
 
-    const listId = this.route.snapshot.queryParamMap.get('id');
-    if (listId) {
-      const found = this.customLists.find(list => list.id === listId);
-      this.selectedList = found || null;
-    }
+
+
+  ngOnInit(): void {
+  this.customLists = this.watchlistService.getCustomLists();
+
+  const listId = this.route.snapshot.paramMap.get('id');
+
+  if (listId) {
+    const found = this.customLists.find(list => list.id === listId);
+    this.selectedList = found || null;
   }
+}
+
+
+
 
   viewList(list: CustomList): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { id: list.id },
-      queryParamsHandling: 'merge'
-    });
-    this.selectedList = list;
-  }
+  this.router.navigate(['/watchlist/custom', list.id]);
+}
+
+
 
   guessMediaType(items: any[]): 'tv' | 'movie' {
     return items?.[0]?.title ? 'movie' : 'tv';

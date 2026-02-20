@@ -36,8 +36,9 @@ export class CustomListDetailComponent implements OnInit {
   }
 
 viewList(list: CustomList): void {
-  this.router.navigate(['/create-list'], { queryParams: { id: list.id } });
+  this.router.navigate(['/watchlist/custom', list.id]);
 }
+
   editList(listId: string): void {
     this.editingListId = listId;
     this.activeMenuId = null;
