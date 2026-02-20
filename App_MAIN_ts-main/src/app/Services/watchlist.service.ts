@@ -118,40 +118,39 @@ private _menuState = new BehaviorSubject<WatchlistMenuState | null>(null);
     privacy: 'public' | 'private';
     items: any[];
   }[] = [];
-
-  createCustomList(list: {
-    id: string;
-    name: string;
-    description: string;
-    privacy: 'public' | 'private';
-    items: any[];
-  }): void {
-    this.customLists.push(list);
-  }
-
-  getCustomListById(id: string) {
-    return this.customLists.find(list => list.id === id);
-  }
-// watchlist.service.ts
-// updateCustomLists(lists: CustomList[]): void {
-//   localStorage.setItem('customLists', JSON.stringify(lists));
-//   this.watchlistChangedSource.next(); // notify listeners (pages + components)
-// }
-
   
-  getCustomLists(): any[] {
-    return JSON.parse(localStorage.getItem(this.customListsKey) || '[]');
-  }
+/* ------------ CUSTOM LISTS (FINAL CLEAN VERSION) ------------ */
 
-  saveCustomList(list: any): void {
-    const lists = this.getCustomLists();
-    lists.push(list);
-    localStorage.setItem(this.customListsKey, JSON.stringify(lists));
-  }
-
-  updateCustomLists(lists: CustomList[]): void {
-  localStorage.setItem('customLists', JSON.stringify(lists));
+getCustomLists(): CustomList[] {
+  return JSON.parse(localStorage.getItem(this.customListsKey) || '[]');
 }
+
+getCustomListById(id: string): CustomList | undefined {
+  return this.getCustomLists().find(list => list.id === id);
+}
+
+saveCustomList(list: CustomList): void {
+  const lists = this.getCustomLists();
+  lists.push({
+    ...list,
+    modifiedAt: new Date().toISOString()
+  });
+
+  localStorage.setItem(this.customListsKey, JSON.stringify(lists));
+  this.watchlistChangedSource.next();
+}
+
+updateCustomLists(lists: CustomList[]): void {
+  localStorage.setItem(this.customListsKey, JSON.stringify(lists));
+  this.watchlistChangedSource.next();
+}
+
+deleteCustomList(id: string): void {
+  const updated = this.getCustomLists().filter(l => l.id !== id);
+  localStorage.setItem(this.customListsKey, JSON.stringify(updated));
+  this.watchlistChangedSource.next();
+}
+
 
 
 
