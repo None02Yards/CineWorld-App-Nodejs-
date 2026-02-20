@@ -76,21 +76,32 @@ ngOnInit(): void {
     }, () => this.handleError());
   }
 
-  searchByType(query: string, type: string): void {
-    this.Spinner.show();
+ searchByType(
+  query: string,
+  type: 'movie' | 'tv' | 'person' | 'multi'
+): void {
 
-    this._DataService.searchMulti(query, type).subscribe((res: any) => {
-      this.allData = res.results || [];
+  this.Spinner.show();
 
-      if (type === 'person') {
-        this.allData = this.allData.slice(0, 12); // just top celebs
-      } else {
-        this.filterData();
-      }
+  this._DataService
+    .getSearch<MediaItem>(query, type)
+    .subscribe({
+      next: (res) => {
 
-      this.handleResult();
-    }, () => this.handleError());
-  }
+        this.allData = res.results ?? [];
+
+        if (type === 'person') {
+          this.allData = this.allData.slice(0, 12);
+        } else {
+          this.filterData();
+        }
+
+        this.handleResult();
+      },
+      error: () => this.handleError()
+    });
+}
+
 
 filterData() {
   this.allData = this.allData.filter((item: MediaItem) =>
