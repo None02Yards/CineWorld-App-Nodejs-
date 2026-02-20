@@ -78,11 +78,13 @@
      [ngStyle]="dropdownPosition">
   <!-- General Watchlist -->
   <div class="dropdown-item"
-       (click)="toggleGeneralWatchlist(actionMenuItem)">
-    <i class="fa fa-list"></i>
-    {{ isInWatchlist(actionMenuItem.id)
-        ? 'Remove from Watchlist'
-        : 'Add to Watchlist' }}
+       (click)="actionMenuItem && toggleGeneralWatchlist(actionMenuItem)"
+>
+    <i  class="fa fa-list"></i>
+{{ actionMenuItem && isInWatchlist(actionMenuItem.id)
+    ? 'Remove from Watchlist'
+    : 'Add to Watchlist' }}
+
   </div>
 
   <!-- Submenu Trigger -->
