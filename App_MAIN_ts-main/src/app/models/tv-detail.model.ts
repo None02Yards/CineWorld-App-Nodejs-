@@ -1,3 +1,4 @@
+// App_MAIN_ts-main\src\app\models\tv-detail.model.ts
 export interface Genre {
   id: number;
   name: string;
@@ -17,4 +18,6 @@ export interface TvDetail {
   vote_average: number;
   vote_count: number;
   tagline: string | null;
+    createdAt: string; // ISO string
+
 }

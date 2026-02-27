@@ -1,3 +1,4 @@
+// App_MAIN_ts-main\src\app\models\movie-detail.model.ts
 export interface Genre {
   id: number;
   name: string;
@@ -15,4 +16,6 @@ export interface MovieDetail {
   vote_average: number;
   vote_count: number;
   tagline: string | null;
+    createdAt: string; // ISO string
+
 }
