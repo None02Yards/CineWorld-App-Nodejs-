@@ -1,0 +1,22 @@
+.content {
+  position: relative;
+  flex: 1;
+  min-height: 0 !important;
+  display: flex;
+  flex-direction: column;
+  background: #121212;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.content-scroll {
+  flex: 1;
+  min-height: 0 !important;
+  overflow-y: auto;
+  padding-top: 0;
+}
+
+.poster {
+  width: 35px;
+  border-radius: 4px;
+}

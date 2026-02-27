@@ -1,0 +1,50 @@
+
+/* ========================================= */
+/* FLOATING SCROLL HEADER */
+/* ========================================= */
+@import 'overlayscrollbars/styles/overlayscrollbars.css';
+
+
+.scroll-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 40px;
+
+  background: #650014;
+  z-index: 100;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.scroll-topbar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.topbar-play {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #1db954;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.topbar-title {
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+}

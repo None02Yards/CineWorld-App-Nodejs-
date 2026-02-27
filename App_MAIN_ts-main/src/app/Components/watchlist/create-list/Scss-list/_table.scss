@@ -1,0 +1,226 @@
+// app\Components\watchlist\create-list\Scss-list\_table.scss
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px 120px 40px;
+   margin-top: 20px;  
+
+}
+
+.table-body {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+    min-height: 500px;
+}
+
+.media-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.media-table thead {
+  position: sticky;
+  top: 64px; /* sits under scroll header */
+  background: #121212;
+  z-index: 20;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.media-table th,
+.media-table td {
+  padding: 14px 10px;
+  text-align: left;
+}
+
+
+.table-head {
+  position: sticky;
+  top: 0;                // Always stick to top of scroll container
+  z-index: 40;
+
+  display: grid;
+  grid-template-columns:
+    40px
+    60px
+    70px
+    1fr
+    100px
+    60px
+    160px
+    70px
+    50px;
+
+  align-items: center;
+  padding: 14px 0;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #b3b3b3;
+
+  background: #121212;
+  border-bottom: 1px solid #2a2a2a;
+
+  will-change: transform;
+}
+
+
+.table-row {
+  display: grid;
+  grid-template-columns:
+    40px
+    60px
+    70px
+    1fr
+    100px
+    60px
+    160px
+    70px
+    50px;
+
+  align-items: center;
+  padding: 12px 0;
+
+  transition: background 0.2s ease;
+user-select: none;
+  position: relative;
+}
+.table-row:hover {
+  background: #1f1f1f;
+  border-radius: 6px;
+}
+
+
+.table-row:hover .drag-col {
+  opacity: 1;
+}
+
+/* Drag handle */
+.drag-col {
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.drag-col:active {
+  cursor: grabbing;
+}
+
+
+/* While dragging */
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #1f1f1f;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+   z-index: 3000 !important;
+  pointer-events: none;
+
+  display: grid;
+  grid-template-columns:
+    40px
+    60px
+    70px
+    1fr
+    100px
+    60px
+    160px
+    70px
+    50px;
+
+  align-items: center;
+}
+
+/* Placeholder keeps space */
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+/* Smooth animation */
+.cdk-drag-animating {
+  transition: transform 250ms ease;
+}
+
+.table-body.cdk-drop-list-dragging
+.table-row:not(.cdk-drag-placeholder) {
+  transition: transform 250ms ease;
+}
+
+/* ========================================= */
+/* INDEX HOVER PLAY SWAP */
+/* ========================================= */
+
+.index-cell {
+  position: relative;
+  text-align: center;
+}
+
+.index-number {
+  transition: opacity 0.2s ease;
+}
+
+.index-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+/* 🔥 When row hovered */
+
+.table-row:hover .index-number {
+  opacity: 0;
+}
+
+.table-row:hover .index-play {
+  opacity: 1;
+}
+
+/* ========================================= */
+/* DRAG ICON VISIBILITY */
+/* ========================================= */
+
+.drag-handle {
+  opacity: 0;
+  cursor: grab;
+  transition: opacity 0.2s ease;
+}
+
+.custom-context-menu {
+  position: fixed;
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 6px 0;
+  width: 220px;
+  z-index: 5000;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+  animation: fadeInMenu 0.15s ease;
+}
+
+.menu-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s ease;
+}
+
+.menu-item:hover {
+  background: #3a3a3a;
+}
+
+@keyframes fadeInMenu {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
