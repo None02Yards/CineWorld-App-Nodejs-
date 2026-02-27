@@ -21,7 +21,8 @@ export interface CustomList {
   modifiedAt?: string;
     color?: string; 
      size: 'small' | 'medium' | 'large';
-
+    avatar?: string;
+    
 }
 
 export interface WatchlistItem extends StoredWatchlistItem {
@@ -43,11 +44,23 @@ export class WatchlistService {
   private storageKey = 'watchlist';
   private customListsKey = 'customLists';
 
+likedCount = 0;
+private customListsSubject = new BehaviorSubject<CustomList[]>(
+  JSON.parse(localStorage.getItem(this.customListsKey) || '[]')
+);
+
+customLists$ = this.customListsSubject.asObservable();
+
   private watchlistChangedSource = new Subject<void>();
   watchlistChanged$ = this.watchlistChangedSource.asObservable();
 
+private likedKey = 'liked';
+
   constructor() {
     this.migrateLegacyWatchlist();
+  this.migrateDates(); 
+    this.migrateCreatedAt(); // 👈 ADD THIS
+
     
   }
 
@@ -60,6 +73,10 @@ export class WatchlistService {
     localStorage.setItem(this.storageKey, JSON.stringify(list));
   }
 
+
+//   getCustomLists(): CustomList[] {
+//   return this.customListsSubject.value;
+// }
 
    addToWatchlist(item: StoredWatchlistItem): void {
     const list = this.getWatchlist();
@@ -85,6 +102,19 @@ export class WatchlistService {
   getByType(type: 'movie' | 'tv' | 'anime'): StoredWatchlistItem[] {
     return this.getWatchlist().filter(item => item.type === type);
   }
+
+  getCreatedDateFormatted(item: { createdAt?: string }): string {
+  if (!item.createdAt) return 'N/A';
+
+  return new Date(item.createdAt).toLocaleDateString(
+    undefined,
+    {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }
+  );
+}
 
   
   private migrateLegacyWatchlist(): void {
@@ -121,8 +151,12 @@ private _menuState = new BehaviorSubject<WatchlistMenuState | null>(null);
   
 /* ------------ CUSTOM LISTS (FINAL CLEAN VERSION) ------------ */
 
+// getCustomLists(): CustomList[] {
+//   return JSON.parse(localStorage.getItem(this.customListsKey) || '[]');
+// }
+
 getCustomLists(): CustomList[] {
-  return JSON.parse(localStorage.getItem(this.customListsKey) || '[]');
+  return this.customListsSubject.value;
 }
 
 getCustomListById(id: string): CustomList | undefined {
@@ -140,9 +174,15 @@ saveCustomList(list: CustomList): void {
   this.watchlistChangedSource.next();
 }
 
+// updateCustomLists(lists: CustomList[]): void {
+//   localStorage.setItem(this.customListsKey, JSON.stringify(lists));
+//   this.watchlistChangedSource.next();
+// }
+
+
 updateCustomLists(lists: CustomList[]): void {
   localStorage.setItem(this.customListsKey, JSON.stringify(lists));
-  this.watchlistChangedSource.next();
+  this.customListsSubject.next(lists);
 }
 
 deleteCustomList(id: string): void {
@@ -151,9 +191,128 @@ deleteCustomList(id: string): void {
   this.watchlistChangedSource.next();
 }
 
+/* ---------- GET ---------- */
+
+getLiked(): any[] {
+  const raw = localStorage.getItem(this.likedKey);
+  return raw ? JSON.parse(raw) : [];
+}
+
+/* ---------- SAVE ---------- */
+
+private saveLiked(list: any[]): void {
+  localStorage.setItem(this.likedKey, JSON.stringify(list));
+}
+
+/* ---------- ADD ---------- */
+
+addToLiked(item: any): void {
+
+  const list = this.getLiked();
+
+  const exists = list.some(x => x.id === item.id);
+
+  if (!exists) {
+
+    list.push({
+      ...item,
+      likedAt: new Date().toISOString()
+    });
+
+    this.saveLiked(list);
+  }
+}
+
+/* ---------- REMOVE ---------- */
+
+removeFromLiked(id: number): void {
+
+  const updated =
+    this.getLiked().filter(item => item.id !== id);
+
+  this.saveLiked(updated);
+}
+
+/* ---------- CHECK ---------- */
+
+isInLiked(id: number): boolean {
+
+  return this.getLiked().some(item => item.id === id);
+}
 
 
+/* ============================= */
+/* DATE MIGRATION                */
+/* ============================= */
 
+private migrateDates(): void {
+  const lists = this.getCustomLists();
 
+  lists.forEach((list: CustomList) => {
+    list.items.forEach((item: any) => {
+      if (!item.createdAt && item.addedAt) {
+        item.createdAt = item.addedAt;
+        delete item.addedAt;
+      }
+      if (!item.createdAt && item.likedAt) {
+        item.createdAt = item.likedAt;
+        delete item.likedAt;
+      }
+    });
+  });
 
+  this.updateCustomLists(lists);
+}
+
+private migrateCreatedAt(): void {
+
+  const lists = this.getCustomLists();
+  let updated = false;
+
+  lists.forEach((list: CustomList) => {
+    list.items.forEach((item: any) => {
+
+      if (!item.createdAt) {
+        item.createdAt = new Date().toISOString();
+        updated = true;
+      }
+
+    });
+  });
+
+  if (updated) {
+    this.updateCustomLists(lists);
+  }
+}
+
+/* ============================= */
+/* ADD TO CUSTOM LIST            */
+/* ============================= */
+
+addToCustomList(listId: string, item: any): void {
+
+  const lists = this.getCustomLists();
+
+  const list = lists.find(
+    (l: CustomList) => l.id === listId
+  );
+
+  if (!list) return;
+
+  const exists = list.items.some(
+    (i: any) => i.id === item.id
+  );
+
+  if (exists) return;
+
+  // 🔥 CORE LOGIC
+  const newItem = {
+    ...item,
+    createdAt: item.createdAt || new Date().toISOString()
+  };
+
+  list.items.push(newItem);
+
+  this.updateCustomLists(lists);
+}
 }
