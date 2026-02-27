@@ -5,11 +5,16 @@
   background: linear-gradient(to right, #827357, #111110b4, #0b0b0a, #23232380);
   color: #fff;
   padding-top: 4rem;
+  position: relative;
+  inset: 0;
 
   .container {
+    position: sticky;
+    inset: 0;
     max-width: 1200px;
     margin: 0 auto;
   }
+  
 }
 
 .category-card {

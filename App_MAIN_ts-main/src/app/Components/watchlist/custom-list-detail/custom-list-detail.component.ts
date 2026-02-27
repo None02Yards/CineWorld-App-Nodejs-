@@ -29,14 +29,26 @@ export class CustomListDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.customLists = this.watchlistService.getCustomLists();
+   const routeIdParam = this.route.snapshot.paramMap.get('id');
+  const routeIdQuery = this.route.snapshot.queryParamMap.get('id');
+
+  console.log('PARAM ID:', routeIdParam);
+  console.log('QUERY ID:', routeIdQuery);
+
+  const lists = this.watchlistService.getCustomLists();
+  console.log('ALL LISTS:', lists);
+
+  this.customLists = lists;
   }
+
+
 
   toggleMenu(id: string): void {
     this.activeMenuId = this.activeMenuId === id ? null : id;
   }
 
 viewList(list: CustomList): void {
-  this.router.navigate(['/watchlist/custom', list.id]);
+  this.router.navigate(['/create-list'], { queryParams: { id: list.id } });
 }
 
   editList(listId: string): void {
