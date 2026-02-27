@@ -9,6 +9,9 @@ import { ProfileService, Profile } from 'src/app/Services/profile.service';
 })
 export class ProfileComponent implements OnInit {
   profiles: Profile[] = [];
+activeProfile: Profile | null = null;
+showIntro = false;
+
 
   constructor(
     private router: Router,

@@ -77,8 +77,10 @@ isMobileMenuOpen = false;
     currentUrl.includes('/tvshows') ||
     currentUrl.includes('/search') ||
     currentUrl.includes('/home') ||
+    currentUrl.includes('/watchlist') ||
     currentUrl.includes('/watchlist/tv') ||
-    currentUrl.includes('/watchlist/movies');
+    currentUrl.includes('/watchlist/movies')||
+    currentUrl.includes( '/watchlist/custom');
 
   const isHomePage =
     currentUrl === '/' || currentUrl === '/home';
@@ -93,10 +95,26 @@ isMobileMenuOpen = false;
     currentUrl.includes('/people') ||
     isPersonDetailsPage;
 
-  this.hideNavbar = false;
+this.hideNavbar = false;
+
+this.isDetailsPage =
+  currentUrl.startsWith('/details');
+
+this.navCondensed = false;
+this.hideUntilHeroEnd = false;
+
+const isCustomPage =
+  currentUrl.includes('/watchlist/custom') ||
+  currentUrl.includes('/create-list');
+
+if (isCustomPage) {
+  this.isScrolled = true;
+} else if (!this.isDetailsPage) {
+  this.isScrolled = false;
+}
 
   this.isDetailsPage =
-    currentUrl.startsWith('/details/');
+    currentUrl.startsWith('/details');
 
   this.navCondensed = false;
   this.hideUntilHeroEnd = false;
@@ -448,9 +466,10 @@ getAvatarColor(name?: string): string {
     }
     if (
       currentUrl.startsWith('/watchlist/movies') ||
-      currentUrl.startsWith('/watchlist/tv')
+      currentUrl.startsWith('/watchlist/tv')||
+      currentUrl.startsWith('/details/movie')
     ) {
-      this.isScrolled = scrollY > 0;  // show full navbar on first scroll
+      this.isScrolled = scrollY > 0;  
       return;
     }
 
@@ -461,6 +480,7 @@ getAvatarColor(name?: string): string {
 
     if (isCustomListPage || isCreateListPage) {
       this.hideNavbar = false;
+      this.isScrolled = true; //
       return;
     }
 
