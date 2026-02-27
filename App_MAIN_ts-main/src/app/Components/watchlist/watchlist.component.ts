@@ -104,6 +104,8 @@ export class WatchlistComponent implements OnInit {
       this.animes.push(enriched);
     });}
     });
+
+    
   }
 
   removeFromWatchlist(id: number, type: 'movie' | 'tv' | 'anime'): void {
@@ -188,8 +190,19 @@ createCustomList(): void {
     this.isCreateListModalOpen = false;
   }
 
+// goToCustomList(): void {
+//   if (this.lastCreatedListId) {
+//     this.router.navigate(['/watchlist/custom', this.lastCreatedListId]);
+//   } else {
+//     this.router.navigate(['/watchlist/custom']);
+//   }
+// }
+
+
 goToCustomList(): void {
-  if (this.lastCreatedListId) {
+  const lists = this.watchlistService.getCustomLists();
+
+  if (this.lastCreatedListId && lists.some(l => l.id === this.lastCreatedListId)) {
     this.router.navigate(['/watchlist/custom', this.lastCreatedListId]);
   } else {
     this.router.navigate(['/watchlist/custom']);
