@@ -168,3 +168,46 @@ body.watchlist-open .rating-circle {
 body.watchlist-open .watchlist-icon-container.is-stubborn {
   visibility: hidden !important;
 }
+
+.os-content {
+  height: auto !important;
+}
+
+.content-scroll .os-content {
+  height: auto !important;
+}
+
+
+.content-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.content-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255,255,255,0.35);
+}
+
+.os-theme-clean {
+  --os-size: 6px;
+  --os-handle-bg: rgba(255,255,255,0.18);
+  --os-handle-bg-hover: rgba(255,255,255,0.35);
+  --os-handle-bg-active: rgba(255,255,255,0.5);
+}
+
+.os-scrollbar {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.os-host.os-scrolling .os-scrollbar {
+  opacity: 1;
+}
