@@ -1,0 +1,18 @@
+.content-header {
+  padding:0 0 0 25px;
+  background: linear-gradient(
+    to bottom,
+    rgba(120, 0, 0, 0.9),
+    #121212 70%
+  );
+}
+
+.header-inner {
+  display: flex;
+  gap: 40px;
+  align-items: flex-end;
+}
+
+.header-content{
+  margin-top: 20px !important;
+}
