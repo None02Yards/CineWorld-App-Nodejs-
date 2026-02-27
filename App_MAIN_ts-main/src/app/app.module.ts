@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { NavbarComponent } from './Core/navbar/navbar.component';
 import { FooterComponent } from './Core/footer/footer.component';
@@ -35,6 +36,7 @@ import { KidsComponent } from './Components/kids/kids.component';
 import { ProfileComponent } from './Components/pages/profile/profile.component';
 import { ManageProfilesComponent } from './Components/pages/profile/manage-profiles/manage-profiles.component';
 import { AccountDropdownComponent } from './shared/account-dropdown/account-dropdown.component';
+import { MainCineIntroComponent } from './shared/main-cine-intro/main-cine-intro.component';
 // import { NewsletterSubscribeComponent } from './shared/newsletter-subscribe/newsletter-subscribe.component';
 
 
@@ -63,6 +65,7 @@ KidsComponent,
 ProfileComponent,
 ManageProfilesComponent,
 AccountDropdownComponent,
+MainCineIntroComponent,
 // NewsletterSubscribeComponent,
 
   ],
@@ -78,6 +81,8 @@ AccountDropdownComponent,
     SharedModule, 
     FormsModule,
   HomeLayoutModule,
+  DragDropModule,
+
   ],
   bootstrap: [AppComponent]
 })

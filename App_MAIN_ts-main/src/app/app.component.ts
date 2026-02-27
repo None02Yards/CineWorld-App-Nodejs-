@@ -21,13 +21,28 @@ constructor(private router: Router) {
     if (event instanceof NavigationEnd) {
       this.currentRoute = event.urlAfterRedirects;
 
-      const hiddenRoutes = ['/welcome', '/profile', '/manage-profiles'];
+      const hiddenRoutes = ['/welcome', '/profile', '/manage-profiles', '/create-list', '/watchlist/custom'];
 
       this.hideFooter = hiddenRoutes.some(route =>
         this.currentRoute.startsWith(route)
       );
 
       this.hideSidebar = this.hideFooter;
+
+   const immersiveRoutes = [
+  '/create-list',
+  '/watchlist/custom'
+];
+
+const isImmersive = immersiveRoutes.some(route =>
+  this.currentRoute.startsWith(route)
+);
+
+if (isImmersive) {
+  document.body.classList.add('create-list-active');
+} else {
+  document.body.classList.remove('create-list-active');
+}
 
       setTimeout(() => this.checkScroll(), 100);
     }
@@ -71,4 +86,3 @@ constructor(private router: Router) {
 
   
 }
-
