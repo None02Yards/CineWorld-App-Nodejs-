@@ -1,0 +1,70 @@
+<div class="login-wrapper">
+
+<div class="login-card">
+
+  <h1 class="login-title">Login</h1>
+
+  <p class="subtitle">
+    Welcome back please login to your account
+  </p>
+
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+
+    <!-- EMAIL -->
+    <div class="input-group">
+
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="Email"
+        required
+      />
+
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="input-group">
+
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+        required
+      />
+
+    </div>
+
+    <!-- LOGIN BUTTON -->
+    <button
+      type="submit"
+      class="login-btn"
+      [disabled]="loginForm.invalid || loading">
+
+      {{ loading ? 'Logging in...' : 'Login' }}
+
+    </button>
+
+  </form>
+
+
+  <!-- ERROR -->
+  <p *ngIf="errorMessage" class="auth-error">
+    {{ errorMessage }}
+  </p>
+
+
+  <!-- SIGNUP SWITCH -->
+  <p class="signup-link">
+
+    Don't have an account?
+
+    <span (click)="goToSignup()">
+      Signup
+    </span>
+
+  </p>
+
+</div>
+</div>
