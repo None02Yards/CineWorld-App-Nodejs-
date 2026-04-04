@@ -18,6 +18,10 @@ import { KidsDataService } from 'src/app/Services/kids-data.service';
 export class WatchlistComponent implements OnInit {
 
   childRouteActive = false;
+  showAuthModal = false;
+// showAuthModal = false;
+// isCreateListModalOpen = false;
+
 
   movies: WatchlistItem[] = [];
   tvShows: WatchlistItem[] = [];
@@ -107,6 +111,40 @@ export class WatchlistComponent implements OnInit {
 
     
   }
+
+  openAuthModal() {
+
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    this.isCreateListModalOpen = true;
+    return;
+  }
+
+  this.showAuthModal = true;
+
+}
+
+
+handleCreateListClick() {
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    this.showAuthModal = true;
+    return;
+  }
+
+  this.isCreateListModalOpen = true;
+
+}
+
+onLoginSuccess() {
+
+  this.showAuthModal = false;
+  this.isCreateListModalOpen = true;
+
+}
 
   removeFromWatchlist(id: number, type: 'movie' | 'tv' | 'anime'): void {
 

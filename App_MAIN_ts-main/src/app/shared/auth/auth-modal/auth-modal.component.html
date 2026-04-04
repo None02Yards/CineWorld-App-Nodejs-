@@ -1,0 +1,19 @@
+
+
+ <div class="auth-overlay" (click)="closeModal()">
+
+  <div class="auth-container" (click)="$event.stopPropagation()">
+
+    <button class="close-btn" (click)="closeModal()">✕</button>
+
+    <app-login *ngIf="mode === 'login'"
+      (signupRequested)="switchToSignup()">
+    </app-login>
+
+    <app-signup *ngIf="mode === 'signup'"
+      (loginRequested)="switchToLogin()">
+    </app-signup>
+
+  </div>
+
+</div>

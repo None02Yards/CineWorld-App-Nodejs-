@@ -37,6 +37,9 @@ import { ProfileComponent } from './Components/pages/profile/profile.component';
 import { ManageProfilesComponent } from './Components/pages/profile/manage-profiles/manage-profiles.component';
 import { AccountDropdownComponent } from './shared/account-dropdown/account-dropdown.component';
 import { MainCineIntroComponent } from './shared/main-cine-intro/main-cine-intro.component';
+import { LoginComponent } from './shared/auth/login/login.component';
+import { SignupComponent } from './shared/auth/signup/signup.component';
+import { AuthModalComponent } from './shared/auth/auth-modal/auth-modal.component';
 // import { NewsletterSubscribeComponent } from './shared/newsletter-subscribe/newsletter-subscribe.component';
 
 
@@ -66,6 +69,9 @@ ProfileComponent,
 ManageProfilesComponent,
 AccountDropdownComponent,
 MainCineIntroComponent,
+LoginComponent,
+SignupComponent,
+AuthModalComponent,
 // NewsletterSubscribeComponent,
 
   ],

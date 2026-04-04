@@ -1,4 +1,4 @@
-<!-- watchlist.component.html -->
+<!-- watchlist.component.html
 <div class="maincontainer position-relative">
     <div class="  watchlist-header position-relative text-white">
       <div class="watchlist-header position-relative text-white">
@@ -6,27 +6,27 @@
           <h1 class="watchlist-title m-0 ms-2">Watchlist Hub</h1>
           <span class="emoji">🍿</span>
         </div>
-
-        <!-- Header content, button aligned left -->
+    
+       
         <div class="header-content d-flex flex-column align-items-end">
-
-      <button class="btn btn-outline-light eye-icon-button" (click)="goToCustomList()" title="View Your List">
-      👁️
-    </button>
-      <!-- Create Button -->
-      <button class="create-list-button mb-2" (click)="openCreateListModal()">
-        <span class="plus-icon me-2">+</span>
-        <div class="button-text">
-          <div class="main-text">Create a new list</div>
-          <div class="sub-text">List your movie, TV & celebrity picks.</div>
+    
+          <button class="btn btn-outline-light eye-icon-button" (click)="goToCustomList()" title="View Your List">
+            👁️
+          </button>
+          
+          <button class="create-list-button mb-2" (click)="openCreateListModal()">
+            <span class="plus-icon me-2">+</span>
+            <div class="button-text">
+              <div class="main-text">Create a new list</div>
+              <div class="sub-text">List your movie, TV & celebrity picks.</div>
+            </div>
+          </button>
+    
+    
         </div>
-      </button>
+      <app-auth-modal *ngIf="showAuthModal" (close)="showAuthModal = false">
+      </app-auth-modal>
 
-
-    </div>
-
-
-    <!-- Toggleable Create List Form Below Button -->
     <div *ngIf="isCreateListModalOpen" class="new-list-form mt-4">
       <form (ngSubmit)="createCustomList()">
         <div class="form-group">
@@ -71,11 +71,11 @@
 
     </div>
 
-  <!-- Main Content -->
+ 
     <div *ngIf="!childRouteActive">
       <div class="container spacebottom mt-4">
         <div class="watchlist-row">
-          <!-- Movies Card -->
+        
           <div class="category-card">
             <h2>🍿 Movies</h2>
             <div class="preview-thumbs">
@@ -86,7 +86,7 @@
             <a routerLink="/watchlist/movies">View All</a>
           </div>
         
-          <!-- TV Shows Card -->
+          
           <div class="category-card">
             <h2>📺 TV Shows</h2>
             <div class="preview-thumbs">
@@ -97,8 +97,7 @@
             <a routerLink="/watchlist/tv">View All</a>
           </div>
         
-          <!-- Animes Card (if needed) -->
-        <!-- Animes Card -->
+
         <div class="category-card">
           <h2>✨ Animation</h2>
           <div class="preview-thumbs anime">
@@ -127,4 +126,232 @@
 </div>
 
 
+ -->
 
+
+
+ <div class="maincontainer position-relative">
+
+  <div class="watchlist-header position-relative text-white">
+
+    <div class="floating-title">
+      <h1 class="watchlist-title m-0 ms-2">Watchlist Hub</h1>
+      <span class="emoji">🍿</span>
+    </div>
+
+    <!-- Header buttons -->
+    <div class="header-content d-flex flex-column align-items-end">
+
+      <!-- View List -->
+      <button
+        class="btn btn-outline-light eye-icon-button"
+        (click)="goToCustomList()"
+        title="View Your List">
+        👁️
+      </button>
+
+      <!-- Create List -->
+      <button
+        class="create-list-button mb-2"
+        (click)="handleCreateListClick()">
+
+        <span class="plus-icon me-2">+</span>
+
+        <div class="button-text">
+          <div class="main-text">Create a new list</div>
+          <div class="sub-text">
+            List your movie, TV & celebrity picks.
+          </div>
+        </div>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- AUTH MODAL POPUP -->
+  <app-auth-modal
+  *ngIf="showAuthModal"
+  (loginSuccess)="onLoginSuccess()"
+  (close)="showAuthModal = false">
+</app-auth-modal>
+
+  <!-- CREATE LIST FORM -->
+  <div *ngIf="isCreateListModalOpen" class="new-list-form mt-4">
+
+    <form (ngSubmit)="createCustomList()">
+
+      <div class="form-group">
+        <label for="listName">Enter the name of your list</label>
+
+        <input
+          type="text"
+          id="listName"
+          [(ngModel)]="newListName"
+          name="listName"
+          maxlength="255"
+          class="form-control"
+          required
+        />
+      </div>
+
+
+      <div class="form-group mt-3">
+        <label for="listDesc">Describe your list</label>
+
+        <textarea
+          id="listDesc"
+          [(ngModel)]="newListDesc"
+          name="listDesc"
+          maxlength="10000"
+          rows="3"
+          class="form-control">
+        </textarea>
+      </div>
+
+
+      <div class="form-group mt-4">
+
+        <label>Privacy setting</label>
+
+        <div class="d-flex gap-3 mt-2">
+
+          <label>
+            <input
+              type="radio"
+              name="privacy"
+              [(ngModel)]="newListPrivacy"
+              value="public"
+              checked />
+            Public
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="privacy"
+              [(ngModel)]="newListPrivacy"
+              value="private" />
+            Private
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-4 d-flex gap-3">
+
+        <button
+          type="submit"
+          class="btn btn-warning">
+          Create
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelCreate()">
+          Cancel
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+
+  <!-- MAIN CONTENT -->
+  <div *ngIf="!childRouteActive">
+
+    <div class="container spacebottom mt-4">
+
+      <div class="watchlist-row">
+
+        <!-- MOVIES -->
+        <div class="category-card">
+
+          <h2>🍿 Movies</h2>
+
+          <div class="preview-thumbs">
+
+            <img
+              *ngFor="let movie of movies.slice(0,4)"
+              [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path"
+              [alt]="movie.title"
+            />
+
+          </div>
+
+          <a routerLink="/watchlist/movies">
+            View All
+          </a>
+
+        </div>
+
+
+        <!-- TV -->
+        <div class="category-card">
+
+          <h2>📺 TV Shows</h2>
+
+          <div class="preview-thumbs">
+
+            <img
+              *ngFor="let show of tvShows.slice(0,4)"
+              [src]="'https://image.tmdb.org/t/p/w200' + show.poster_path"
+              [alt]="show.title"
+            />
+
+          </div>
+
+          <a routerLink="/watchlist/tv">
+            View All
+          </a>
+
+        </div>
+
+
+        <!-- ANIME -->
+        <div class="category-card">
+
+          <h2>✨ Animation</h2>
+
+          <div class="preview-thumbs anime">
+
+            <ng-container *ngIf="animes.length; else noAnimes">
+
+              <img
+                *ngFor="let anime of animes.slice(0,4)"
+                [src]="'https://image.tmdb.org/t/p/w200' + anime.poster_path"
+                [alt]="anime.title || anime.name"
+              />
+
+            </ng-container>
+
+            <ng-template #noAnimes>
+
+              <img src="anime-collage.jpg">
+              <p>No animes saved yet</p>
+
+            </ng-template>
+
+          </div>
+
+          <a routerLink="/watchlist/animes">
+            Explore
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
